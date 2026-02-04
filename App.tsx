@@ -85,9 +85,9 @@ const App: React.FC = () => {
               allowFullScreen={true} 
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
-              className="grayscale invert opacity-60 hover:opacity-100 transition-opacity duration-1000"
+              className="w-full h-full opacity-90 hover:opacity-100 transition-opacity duration-500"
             ></iframe>
-            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_100px_rgba(0,0,0,0.8)]"></div>
+            <div className="absolute inset-0 pointer-events-none shadow-[inset_0_0_50px_rgba(0,0,0,0.5)]"></div>
           </div>
         </section>
 
