@@ -18,15 +18,19 @@ const App: React.FC = () => {
   const MAPS_LINK = "https://www.google.com/maps/search/?api=1&query=Monte+Magdalena+El+Monte+Region+Metropolitana";
 
   const [timeLeft, setTimeLeft] = useState<{days: number, hours: number, minutes: number} | null>(null);
+  const [expandedActivity, setExpandedActivity] = useState<string | null>(null);
 
   // Intersection Observer for Scroll Animations
   useEffect(() => {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          entry.target.classList.remove('opacity-0', 'translate-y-8');
-          entry.target.classList.add('animate-fade-in-up');
-          observer.unobserve(entry.target); // Animate only once
+          const target = entry.target as HTMLElement;
+          target.classList.remove('opacity-0', 'translate-y-8');
+          // Check if element has a specific animation class defined, otherwise default to fade-in-up
+          const animationClass = target.dataset.animate || 'animate-fade-in-up';
+          target.classList.add(animationClass);
+          observer.unobserve(target); // Animate only once
         }
       });
     }, {
@@ -62,28 +66,139 @@ const App: React.FC = () => {
     return () => clearInterval(interval);
   }, []);
 
+  const toggleActivity = (id: string) => {
+    setExpandedActivity(prev => prev === id ? null : id);
+  };
 
   const programDays = [
     {
       day: "Día 1: Jueves 19 de Marzo",
       activities: [
-        { time: "09:00 – 09:30", title: "Recepción + Coffee", desc: "Llegada y café de bienvenida." },
-        { time: "09:30 – 10:50", title: "Bloque 1 — Macarena Torres", desc: "Conceptualización de caso desde el apego." },
-        { time: "10:50 – 12:20", title: "Bloque 2 — Demostración clínica MIP", desc: "María Inés Pesqueira: Intervención clínica en vivo (45 min intervención + reflexión)." },
-        { time: "12:20 – 12:35", title: "Break", desc: "Pausa de café." },
-        { time: "12:35 – 13:55", title: "Bloque 3 — Paula Uribe", desc: "Cómo ayudar a las personas que están en una relación con un narcisista." },
-        { time: "13:55 – 14:55", title: "Almuerzo", desc: "Espacio de comida y networking." },
-        { time: "14:55 – 16:15", title: "Bloque 4 — José Uribe & Lucas Uribe", desc: "Trabajo con Wiston: Tecnología, alianza y factores que inciden en el vínculo cliente-terapeuta." },
-        { time: "16:15 – 16:30", title: "Break", desc: "Pausa de la tarde." },
-        { time: "16:30 – 18:00", title: "Bloque 5 — Camila Señoret", desc: "Familias Ensambladas." },
-        { time: "20:00", title: "Clase de Tragos + Encuentro", desc: "Espacio social y de distensión." },
+        { 
+          id: "d1-recepcion",
+          time: "09:00 – 09:30", 
+          title: "Acreditación & Welcome Coffee", 
+          desc: "Inicio de la experiencia Conecta-Camp. Espacio de vinculación inicial en el entorno natural de Monte Magdalena.",
+          takeaways: ["Networking inicial", "Kit de bienvenida", "Activación sensorial"],
+          speaker: ""
+        },
+        { 
+          id: "d1-b1",
+          time: "09:30 – 10:50", 
+          title: "El Mapa Oculto del Apego: Conceptualización Clínica Avanzada", 
+          speaker: "Ps. Macarena Torres",
+          desc: "Una inmersión profunda en cómo la teoría del apego deja de ser un libro para convertirse en una brújula clínica. Analizaremos cómo decodificar los patrones vinculares del paciente adulto para estructurar intervenciones precisas.",
+          takeaways: [
+              "Herramientas para identificar estilos de apego en la primera entrevista.",
+              "Estrategias para sortear las defensas del apego evitativo.",
+              "Modelos de conceptualización de caso aplicables el lunes en consulta."
+          ]
+        },
+        { 
+          id: "d1-b2",
+          time: "10:50 – 12:20", 
+          title: "En la Arena Clínica: Demostración MIP en Vivo", 
+          speaker: "Ps. María Inés Pesqueira",
+          desc: "La teoría puesta a prueba. Una sesión simulada de alto realismo donde observaremos la micro-regulación del vínculo terapéutico minuto a minuto, seguido de un de-briefing técnico exhaustivo.",
+          takeaways: [
+              "Observación directa de intervenciones de regulación emocional.",
+              "Análisis de la contratransferencia en tiempo real.",
+              "Técnicas de reparación de rupturas en la alianza."
+          ]
+        },
+        { 
+          id: "d1-break1",
+          time: "12:20 – 12:35", 
+          title: "Coffee Break & Networking", 
+          desc: "Pausa reflexiva para discutir los casos presentados.",
+          takeaways: [],
+          speaker: ""
+        },
+        { 
+          id: "d1-b3",
+          time: "12:35 – 13:55", 
+          title: "Ecos del Yo: Desarmando la Relación Narcisista", 
+          speaker: "Ps. Paula Uribe",
+          desc: "Más allá de la etiqueta: una guía clínica para trabajar con pacientes atrapados en la órbita de una estructura narcisista. Cómo reconstruir la identidad erosionada y establecer límites desde la salud mental.",
+          takeaways: [
+              "Identificación de la 'gaslighting' y manipulación sutil.",
+              "Protocolos para fortalecer el 'Yo' del paciente víctima.",
+              "Diferenciación entre narcisismo patológico y rasgos narcisistas."
+          ]
+        },
+        { 
+          id: "d1-lunch",
+          time: "13:55 – 14:55", 
+          title: "Almuerzo Campestre", 
+          desc: "Experiencia culinaria local para recargar energías y continuar la conversación.",
+          takeaways: [],
+          speaker: ""
+        },
+        { 
+          id: "d1-b4",
+          time: "14:55 – 16:15", 
+          title: "El Tercero en Discordia: Tecnología y Alianza (Modelo Winston)", 
+          speaker: "José Uribe & Lucas Uribe",
+          desc: "La terapia no ocurre en el vacío. Exploraremos cómo la tecnología (Wiston) y los factores extra-terapéuticos influyen radicalmente en la adherencia y el resultado del tratamiento. ¿Es la IA un aliado o una amenaza?",
+          takeaways: [
+              "Uso ético de herramientas digitales en psicoterapia.",
+              "Estrategias para medir y mejorar la alianza terapéutica.",
+              "Innovación en el encuadre clínico tradicional."
+          ]
+        },
+        { 
+          id: "d1-break2",
+          time: "16:15 – 16:30", 
+          title: "Break de Tarde", 
+          desc: "Pausa breve.",
+          takeaways: [],
+          speaker: ""
+        },
+        { 
+          id: "d1-b5",
+          time: "16:30 – 18:00", 
+          title: "Arquitectura de lo Complejo: Familias Ensambladas", 
+          speaker: "Ps. Camila Señoret",
+          desc: "Los tuyos, los míos y los nuestros. Un abordaje sistémico para navegar los desafíos únicos de las nuevas configuraciones familiares, donde las lealtades invisibles y los roles difusos suelen sabotear la armonía.",
+          takeaways: [
+              "Mapas para definir roles en padrastros y madrastras.",
+              "Manejo de conflictos de lealtad en los hijos.",
+              "Técnicas para establecer nuevas normas de convivencia."
+          ]
+        },
+        { 
+          id: "d1-social",
+          time: "20:00", 
+          title: "Sunset Mixology & Social", 
+          desc: "Clase maestra de tragos y espacio de distensión. El momento donde los colegas se convierten en amigos.",
+          takeaways: ["Conexión humana real", "Experiencia lúdica", "Relax"],
+          speaker: ""
+        },
       ]
     },
     {
       day: "Día 2: Viernes 20 de Marzo",
       activities: [
-        { time: "09:00 – 10:00", title: "Desayuno y Cierre", desc: "Comienzo del día." },
-        { time: "10:00 – 12:00", title: "Mesa Redonda: Adolescencia en modo vínculo", desc: "Elisa Señoret + Catalina Fracchia + Loreto Gálvez: Cómo ayudar a los adolescentes a relacionarse mejor." },
+        { 
+          id: "d2-start",
+          time: "09:00 – 10:00", 
+          title: "Desayuno & Cierre Reflexivo", 
+          desc: "Integración de los aprendizajes del día anterior y preparación para el bloque final.",
+          takeaways: [],
+          speaker: ""
+        },
+        { 
+          id: "d2-b1",
+          time: "10:00 – 12:00", 
+          title: "Mesa Redonda: El Enigma Adolescente", 
+          speaker: "Ps. Elisa Señoret + Ps. Catalina Fracchia + Ps. Loreto Gálvez",
+          desc: "Tres expertas, tres miradas. Un diálogo crítico sobre cómo vincularnos con una generación marcada por la inmediatez y la fragilidad. Abordaremos trauma, identidad y el desafío de ser adulto referente hoy.",
+          takeaways: [
+              "Estrategias de enganche con adolescentes resistentes.",
+              "Mirada informada por el trauma (EMDR).",
+              "Herramientas de coaching parental efectivo."
+          ]
+        },
       ]
     }
   ];
@@ -132,25 +247,117 @@ const App: React.FC = () => {
           </div>
         </section>
 
-        <section id="programa" className="px-6 py-20 md:max-w-4xl md:mx-auto scroll-mt-24">
+        {/* SECTION: PROGRAMA REDISEÑADO CON ACORDEÓN */}
+        <section id="programa" className="px-6 py-20 md:max-w-5xl md:mx-auto scroll-mt-24">
           <div className="flex flex-col items-center mb-16 text-center">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4">Itinerario</h2>
             <h3 className="text-3xl md:text-5xl font-black uppercase text-white">Programa <span className="text-primary italic">Completo</span></h3>
           </div>
-          <div className="space-y-12 bg-surface/50 backdrop-blur-sm p-8 rounded-3xl shadow-soft border border-white/10">
-            {programDays.map((day, idx) => (
-              <div key={idx} className="space-y-6">
-                <h4 className="text-lg font-bold text-white border-b-2 border-primary/20 pb-2 uppercase tracking-wider inline-block">{day.day}</h4>
-                <div className="space-y-6">
-                  {day.activities.map((act, i) => (
-                    <div key={i} className="flex flex-col sm:flex-row gap-2 sm:gap-6 group border-b border-white/5 pb-4 last:border-0 last:pb-0">
-                      <div className="text-primary font-bold font-mono text-xs md:text-sm pt-1 whitespace-nowrap min-w-[90px]">{act.time}</div>
-                      <div className="flex-1">
-                        <h5 className="font-black text-base md:text-lg text-white mb-1 group-hover:text-primary transition-colors leading-tight">{act.title}</h5>
-                        <p className="text-sm text-gray-300 font-light leading-relaxed opacity-90">{act.desc}</p>
-                      </div>
-                    </div>
-                  ))}
+
+          <div className="relative">
+             {programDays.map((day, idx) => (
+              <div key={idx} className="mb-20 last:mb-0">
+                {/* Cabecera del Día Sticky */}
+                <div className="flex items-center gap-4 mb-8 sticky top-[72px] bg-background-page/95 backdrop-blur-xl z-30 py-4 border-b border-white/10 shadow-sm transition-all">
+                  <div className="size-3 rounded-full bg-primary shadow-glow animate-pulse"></div>
+                  <h4 className="text-2xl md:text-4xl font-zalendo uppercase text-white tracking-wide">
+                    {day.day}
+                  </h4>
+                </div>
+                
+                <div className="relative space-y-4">
+                   {/* Línea de tiempo móvil decorativa */}
+                   <div className="absolute left-[11px] top-4 bottom-4 w-px bg-gradient-to-b from-primary/50 via-white/10 to-transparent md:hidden"></div>
+            
+                   {day.activities.map((act, i) => {
+                     const isExpanded = expandedActivity === act.id;
+                     return (
+                     <div key={i} className="group relative pl-10 md:pl-0 reveal-on-scroll opacity-0 translate-y-4 transition-all duration-700">
+                        {/* Dot Móvil */}
+                        <div className={`absolute left-0 top-6 size-[23px] rounded-full border border-white/10 bg-surface flex items-center justify-center md:hidden z-10 transition-colors shadow-sm ${isExpanded ? 'border-primary' : 'group-hover:border-primary'}`}>
+                           <div className={`size-1.5 rounded-full transition-colors ${isExpanded ? 'bg-primary' : 'bg-white/30 group-hover:bg-primary'}`}></div>
+                        </div>
+            
+                        <div 
+                          onClick={() => toggleActivity(act.id)}
+                          className={`flex flex-col rounded-2xl border transition-all duration-500 cursor-pointer overflow-hidden ${
+                            isExpanded 
+                              ? 'bg-surface border-primary/40 shadow-glow' 
+                              : 'bg-surface/30 border-white/5 hover:bg-surface hover:border-primary/20 hover:shadow-lg hover:-translate-y-1'
+                          }`}
+                        >
+                           {/* HEADER CARD */}
+                           <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 p-6">
+                             {/* Columna Hora */}
+                             <div className="md:w-40 shrink-0 pt-1 flex md:flex-col items-center md:items-start gap-3 md:gap-0">
+                                <span className={`font-zalendo text-3xl md:text-4xl transition-colors duration-500 block leading-none tracking-tighter ${isExpanded ? 'text-primary' : 'text-white/20 group-hover:text-primary'}`}>
+                                  {act.time.split(' – ')[0]}
+                                </span>
+                                <div className={`h-px w-8 my-2 hidden md:block transition-all duration-500 ${isExpanded ? 'w-full bg-primary' : 'bg-white/10 group-hover:w-full group-hover:bg-primary/30'}`}></div>
+                                <span className="text-xs text-text-muted font-mono tracking-widest uppercase opacity-60">
+                                   {act.time.includes('–') ? act.time.split(' – ')[1] : ''}
+                                </span>
+                             </div>
+                             
+                             {/* Columna Titulo */}
+                             <div className="flex-1 border-l border-white/5 md:pl-8 md:border-l-0 md:pl-0 pl-4 flex justify-between items-start gap-4">
+                                <div>
+                                  {act.speaker && (
+                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-1">
+                                      {act.speaker}
+                                    </p>
+                                  )}
+                                  <h5 className={`text-lg md:text-xl font-bold transition-colors leading-tight ${isExpanded ? 'text-white' : 'text-white group-hover:text-primary-light'}`}>
+                                    {act.title}
+                                  </h5>
+                                  {!isExpanded && (
+                                    <p className="text-sm text-text-muted font-light leading-relaxed mt-2 line-clamp-2 opacity-80">
+                                      {act.desc}
+                                    </p>
+                                  )}
+                                </div>
+                                
+                                {/* Unicode Hex Icon \ue5c8 (arrow_forward) replaced with interaction icon */}
+                                <div className={`hidden md:flex flex-col justify-center items-center self-center transform transition-all duration-500 ${isExpanded ? 'rotate-180 text-primary' : 'text-white/30 group-hover:text-primary group-hover:translate-x-2'}`}>
+                                     {/* Usamos el chevron unicode en vez de arrow_forward para indicar desplegable */}
+                                     <span className="material-symbols-outlined text-2xl">{"\ue5c8"}</span>
+                                </div>
+                             </div>
+                           </div>
+
+                           {/* EXPANDED CONTENT (Accordion) */}
+                           <div className={`overflow-hidden transition-[max-height,opacity] duration-700 ease-in-out ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
+                             <div className="p-6 pt-0 md:pl-[220px] pb-8 border-t border-white/5 mx-6 md:mx-0 mt-2">
+                                <div className="grid grid-cols-1 gap-6">
+                                   <div>
+                                     <h6 className="text-xs text-text-muted uppercase tracking-widest font-bold mb-2">De qué trata</h6>
+                                     <p className="text-sm md:text-base text-white font-light leading-relaxed">
+                                       {act.desc}
+                                     </p>
+                                   </div>
+                                   
+                                   {act.takeaways && act.takeaways.length > 0 && (
+                                     <div className="bg-black/20 p-4 rounded-xl border border-white/5">
+                                       <h6 className="text-[10px] text-primary uppercase tracking-[0.2em] font-bold mb-3 flex items-center gap-2">
+                                         <span className="material-symbols-outlined text-sm">{"\ue8d0"}</span> {/* lightbulb icon */}
+                                         Lo que te llevarás
+                                       </h6>
+                                       <ul className="space-y-2">
+                                         {act.takeaways.map((takeaway, tIdx) => (
+                                           <li key={tIdx} className="flex items-start gap-2 text-sm text-gray-300 font-light">
+                                             <span className="text-primary mt-1 text-[8px]">●</span>
+                                             {takeaway}
+                                           </li>
+                                         ))}
+                                       </ul>
+                                     </div>
+                                   )}
+                                </div>
+                             </div>
+                           </div>
+                        </div>
+                     </div>
+                   )})}
                 </div>
               </div>
             ))}
@@ -166,10 +373,10 @@ const App: React.FC = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Card 1 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" style={{ animationDelay: '0ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                            <span className="material-symbols-outlined">hub</span>
+                    {/* Card 1 - hub -> \ue9f4 */}
+                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '0ms' }}>
+                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
+                            <span className="material-symbols-outlined">{"\ue9f4"}</span>
                         </div>
                         <h4 className="text-lg font-bold text-white mb-2">Más allá de un modelo</h4>
                         <p className="text-sm text-text-muted leading-relaxed font-light">
@@ -177,10 +384,10 @@ const App: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Card 2 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" style={{ animationDelay: '150ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                            <span className="material-symbols-outlined">verified</span>
+                    {/* Card 2 - verified -> \ue8e8 */}
+                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '150ms' }}>
+                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
+                            <span className="material-symbols-outlined">{"\ue8e8"}</span>
                         </div>
                         <h4 className="text-lg font-bold text-white mb-2">Sello Clínico Homogéneo</h4>
                         <p className="text-sm text-text-muted leading-relaxed font-light">
@@ -188,10 +395,10 @@ const App: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Card 3 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" style={{ animationDelay: '300ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                            <span className="material-symbols-outlined">groups</span>
+                    {/* Card 3 - groups -> \uf233 */}
+                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '300ms' }}>
+                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
+                            <span className="material-symbols-outlined">{"\uf233"}</span>
                         </div>
                         <h4 className="text-lg font-bold text-white mb-2">Intimidad Exclusiva</h4>
                         <p className="text-sm text-text-muted leading-relaxed font-light">
@@ -199,10 +406,10 @@ const App: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Card 4 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" style={{ animationDelay: '450ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                            <span className="material-symbols-outlined">psychology_alt</span>
+                    {/* Card 4 - psychology_alt -> \uf8ea */}
+                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '450ms' }}>
+                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
+                            <span className="material-symbols-outlined">{"\uf8ea"}</span>
                         </div>
                         <h4 className="text-lg font-bold text-white mb-2">Clínico-Experiencial</h4>
                         <p className="text-sm text-text-muted leading-relaxed font-light">
@@ -210,10 +417,10 @@ const App: React.FC = () => {
                         </p>
                     </div>
 
-                    {/* Card 5 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" style={{ animationDelay: '600ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                            <span className="material-symbols-outlined">videocam_off</span>
+                    {/* Card 5 - videocam_off -> \ue04b */}
+                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '600ms' }}>
+                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
+                            <span className="material-symbols-outlined">{"\ue04b"}</span>
                         </div>
                         <h4 className="text-lg font-bold text-white mb-2">Sin Grabaciones</h4>
                         <p className="text-sm text-text-muted leading-relaxed font-light">
@@ -221,10 +428,10 @@ const App: React.FC = () => {
                         </p>
                     </div>
 
-                     {/* Card 6 */}
-                     <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" style={{ animationDelay: '750ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform">
-                            <span className="material-symbols-outlined">landscape</span>
+                     {/* Card 6 - landscape -> \ue3b6 */}
+                     <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '750ms' }}>
+                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
+                            <span className="material-symbols-outlined">{"\ue3b6"}</span>
                         </div>
                         <h4 className="text-lg font-bold text-white mb-2">Un Formato Inédito</h4>
                         <p className="text-sm text-text-muted leading-relaxed font-light">
@@ -282,12 +489,13 @@ const App: React.FC = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
 
               <div className="relative z-10 flex items-start justify-between">
-                <div className="size-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500">
-                    <span className="material-symbols-outlined">calendar_month</span>
+                {/* calendar_month -> \uebcc */}
+                <div className="size-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500 select-none">
+                    <span className="material-symbols-outlined">{"\uebcc"}</span>
                 </div>
-                {/* Replaced 'Agendar' text with Icon Button to match Location Card */}
-                <div className="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-black transition-all duration-500 shadow-lg group-hover:rotate-12">
-                    <span className="material-symbols-outlined">north_east</span>
+                {/* north_east -> \uf1e5 */}
+                <div className="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-black transition-all duration-500 shadow-lg group-hover:rotate-12 select-none">
+                    <span className="material-symbols-outlined">{"\uf1e5"}</span>
                 </div>
               </div>
               
@@ -301,16 +509,16 @@ const App: React.FC = () => {
                     <div className="pt-8 mt-6 border-t border-white/10">
                       <div className="grid grid-cols-3 gap-4">
                         <div className="flex flex-col">
-                          <span className="text-2xl md:text-3xl font-black text-white">{timeLeft.days}</span> 
-                          <span className="text-[9px] text-primary uppercase tracking-widest">Días</span>
+                          <span className="text-4xl md:text-6xl font-black text-white">{timeLeft.days}</span> 
+                          <span className="text-[10px] text-primary uppercase tracking-widest">Días</span>
                         </div>
                         <div className="flex flex-col border-l border-white/10 pl-4">
-                          <span className="text-2xl md:text-3xl font-black text-white">{timeLeft.hours}</span> 
-                          <span className="text-[9px] text-primary uppercase tracking-widest">Hrs</span>
+                          <span className="text-4xl md:text-6xl font-black text-white">{timeLeft.hours}</span> 
+                          <span className="text-[10px] text-primary uppercase tracking-widest">Hrs</span>
                         </div>
                         <div className="flex flex-col border-l border-white/10 pl-4">
-                          <span className="text-2xl md:text-3xl font-black text-white">{timeLeft.minutes}</span> 
-                          <span className="text-[9px] text-primary uppercase tracking-widest">Min</span>
+                          <span className="text-4xl md:text-6xl font-black text-white">{timeLeft.minutes}</span> 
+                          <span className="text-[10px] text-primary uppercase tracking-widest">Min</span>
                         </div>
                       </div>
                     </div>
@@ -338,14 +546,16 @@ const App: React.FC = () => {
               
               <div className="relative z-10 w-full">
                 <div className="mb-auto flex justify-end">
-                    <div className="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-black transition-all duration-500 shadow-lg group-hover:rotate-12">
-                         <span className="material-symbols-outlined">north_east</span>
+                    {/* north_east -> \uf1e5 */}
+                    <div className="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-black transition-all duration-500 shadow-lg group-hover:rotate-12 select-none">
+                         <span className="material-symbols-outlined">{"\uf1e5"}</span>
                     </div>
                 </div>
 
                 <div className="mt-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
                   <div className="flex items-center gap-2 mb-3 opacity-80 group-hover:opacity-100 transition-opacity">
-                      <span className="material-symbols-outlined text-primary text-xl">location_on</span>
+                      {/* location_on -> \ue0c8 */}
+                      <span className="material-symbols-outlined text-primary text-xl">{"\ue0c8"}</span>
                       <p className="text-xs text-primary uppercase tracking-[0.2em] font-bold">Ubicación</p>
                   </div>
                   <h4 className="text-3xl md:text-4xl font-black text-white leading-tight mb-2">Monte Magdalena</h4>
@@ -420,6 +630,16 @@ const App: React.FC = () => {
         .animate-fade-in-up {
           animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
+
+        @keyframes cardEntry {
+            0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(5px); }
+            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+        }
+        .animate-card-entry {
+            animation: cardEntry 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+            will-change: transform, opacity, filter;
+        }
+
         .animation-delay-200 { animation-delay: 0.2s; }
         .animation-delay-300 { animation-delay: 0.3s; }
         .animation-delay-400 { animation-delay: 0.4s; }

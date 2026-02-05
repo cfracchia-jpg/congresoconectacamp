@@ -63,6 +63,16 @@ const exponents: Exponent[] = [
 
 const Exponents: React.FC = () => {
   const [selectedExponent, setSelectedExponent] = useState<Exponent | null>(null);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const handleClose = () => {
+    if (isClosing) return;
+    setIsClosing(true);
+    setTimeout(() => {
+      setSelectedExponent(null);
+      setIsClosing(false);
+    }, 500);
+  };
 
   // Lock scroll when modal is open
   useEffect(() => {
@@ -74,11 +84,11 @@ const Exponents: React.FC = () => {
     
     // Close on Escape key
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setSelectedExponent(null);
+      if (e.key === 'Escape') handleClose();
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [selectedExponent]);
+  }, [selectedExponent]); // Removed isClosing from deps to avoid re-binding during close anim
 
   return (
     <section id="charlistas" className="px-6 py-20 md:max-w-6xl md:mx-auto scroll-mt-24">
@@ -134,16 +144,16 @@ const Exponents: React.FC = () => {
       {/* Modal Overlay with Glow Effect */}
       {selectedExponent && (
         <div 
-          className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-overlay-appear bg-background-page/60 backdrop-blur-xl"
+          className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background-page/60 backdrop-blur-xl ${isClosing ? 'animate-overlay-disappear' : 'animate-overlay-appear'}`}
           style={{ backgroundImage: 'radial-gradient(circle at center, rgba(220, 189, 161, 0.15), rgba(43, 38, 36, 0.8))' }}
-          onClick={() => setSelectedExponent(null)}
+          onClick={handleClose}
         >
           <div 
-            className="bg-surface border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col md:flex-row animate-modal-slide-up"
+            className={`bg-surface border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col md:flex-row ${isClosing ? 'animate-modal-slide-out' : 'animate-modal-slide-up'}`}
             onClick={(e) => e.stopPropagation()}
           >
             <button 
-              onClick={() => setSelectedExponent(null)}
+              onClick={handleClose}
               className="absolute top-4 right-4 z-10 size-10 rounded-full bg-background-page/80 hover:bg-white/10 text-white flex items-center justify-center transition-colors border border-white/10 shadow-sm"
             >
               <span className="material-symbols-outlined">close</span>
@@ -224,12 +234,28 @@ const Exponents: React.FC = () => {
             animation: overlayAppear 0.5s ease-out forwards;
         }
 
+        @keyframes overlayDisappear {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        .animate-overlay-disappear {
+            animation: overlayDisappear 0.5s ease-in forwards;
+        }
+
         @keyframes modalSlideUp {
             0% { opacity: 0; transform: translateY(100px) scale(0.95); }
             100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         .animate-modal-slide-up {
             animation: modalSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes modalSlideOut {
+            0% { opacity: 1; transform: translateY(0) scale(1); }
+            100% { opacity: 0; transform: translateY(-50px) scale(0.95); }
+        }
+        .animate-modal-slide-out {
+            animation: modalSlideOut 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
       `}</style>
     </section>
