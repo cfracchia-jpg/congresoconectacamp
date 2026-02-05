@@ -9,7 +9,7 @@ import CustomCursor from './components/CustomCursor';
 import { EventDetail } from './types';
 
 const App: React.FC = () => {
-  // Imagen para la tarjeta de ubicación (Misma que el Hero)
+  // Imagen para la tarjeta de ubicación
   const PATH_IMAGE = "https://plus.unsplash.com/premium_photo-1669018130695-35cb72f65c05?fm=jpg&q=60&w=3000&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
   
   // Links
@@ -27,15 +27,14 @@ const App: React.FC = () => {
         if (entry.isIntersecting) {
           const target = entry.target as HTMLElement;
           target.classList.remove('opacity-0', 'translate-y-8');
-          // Check if element has a specific animation class defined, otherwise default to fade-in-up
           const animationClass = target.dataset.animate || 'animate-fade-in-up';
           target.classList.add(animationClass);
-          observer.unobserve(target); // Animate only once
+          observer.unobserve(target);
         }
       });
     }, {
-      threshold: 0.1, // Trigger when 10% of the element is visible
-      rootMargin: "0px 0px -50px 0px" // Offset slightly to ensure it's comfortably in view
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px"
     });
 
     const elements = document.querySelectorAll('.reveal-on-scroll');
@@ -61,13 +60,20 @@ const App: React.FC = () => {
     };
 
     calculateTimeLeft();
-    const interval = setInterval(calculateTimeLeft, 60000); // Update every minute is enough for this view
+    const interval = setInterval(calculateTimeLeft, 60000); 
 
     return () => clearInterval(interval);
   }, []);
 
   const toggleActivity = (id: string) => {
     setExpandedActivity(prev => prev === id ? null : id);
+  };
+
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
   };
 
   const programDays = [
@@ -77,31 +83,30 @@ const App: React.FC = () => {
         { 
           id: "d1-recepcion",
           time: "09:00 – 09:30", 
-          title: "Acreditación & Welcome Coffee", 
-          desc: "Inicio de la experiencia Conecta-Camp. Espacio de vinculación inicial en el entorno natural de Monte Magdalena.",
+          title: "Recepción + Coffee", 
+          desc: "Inicio de la experiencia Conecta-Camp. Espacio de vinculación inicial.",
           takeaways: ["Networking inicial", "Kit de bienvenida", "Activación sensorial"],
           speaker: ""
         },
         { 
           id: "d1-b1",
           time: "09:30 – 10:50", 
-          title: "El Mapa Oculto del Apego: Conceptualización Clínica Avanzada", 
+          title: "Conceptualización de caso desde el apego", 
           speaker: "Ps. Macarena Torres",
-          desc: "Una inmersión profunda en cómo la teoría del apego deja de ser un libro para convertirse en una brújula clínica. Analizaremos cómo decodificar los patrones vinculares del paciente adulto para estructurar intervenciones precisas.",
+          desc: "El apego como brújula en la clínica: Análisis de los patrones vinculares del paciente adulto y cómo estructurar intervenciones precisas.",
           takeaways: [
               "Herramientas para identificar estilos de apego en la primera entrevista.",
-              "Estrategias para sortear las defensas del apego evitativo.",
-              "Modelos de conceptualización de caso aplicables el lunes en consulta."
+              "Estrategias para sortear las defensas del apego evitativo."
           ]
         },
         { 
           id: "d1-b2",
           time: "10:50 – 12:20", 
-          title: "En la Arena Clínica: Demostración MIP en Vivo", 
+          title: "Demostración clínica MIP (Intervención clínica en vivo)", 
           speaker: "Ps. María Inés Pesqueira",
-          desc: "La teoría puesta a prueba. Una sesión simulada de alto realismo donde observaremos la micro-regulación del vínculo terapéutico minuto a minuto, seguido de un de-briefing técnico exhaustivo.",
+          desc: "Sesión en vivo de 45 minutos, guiada por María Inés Pesqueira, más reflexión clínica posterior.",
           takeaways: [
-              "Observación directa de intervenciones de regulación emocional.",
+              "Observación directa de intervenciones de caso clínico.",
               "Análisis de la contratransferencia en tiempo real.",
               "Técnicas de reparación de rupturas en la alianza."
           ]
@@ -109,19 +114,18 @@ const App: React.FC = () => {
         { 
           id: "d1-break1",
           time: "12:20 – 12:35", 
-          title: "Coffee Break & Networking", 
-          desc: "Pausa reflexiva para discutir los casos presentados.",
+          title: "Break", 
+          desc: "Pausa reflexiva.",
           takeaways: [],
           speaker: ""
         },
         { 
           id: "d1-b3",
           time: "12:35 – 13:55", 
-          title: "Ecos del Yo: Desarmando la Relación Narcisista", 
+          title: "Cómo ayudar a las personas que están en una relación con un narcisista", 
           speaker: "Ps. Paula Uribe",
-          desc: "Más allá de la etiqueta: una guía clínica para trabajar con pacientes atrapados en la órbita de una estructura narcisista. Cómo reconstruir la identidad erosionada y establecer límites desde la salud mental.",
+          desc: "Cómo trabajar la relación con quien está o estuvo con un narcisista.",
           takeaways: [
-              "Identificación de la 'gaslighting' y manipulación sutil.",
               "Protocolos para fortalecer el 'Yo' del paciente víctima.",
               "Diferenciación entre narcisismo patológico y rasgos narcisistas."
           ]
@@ -129,17 +133,17 @@ const App: React.FC = () => {
         { 
           id: "d1-lunch",
           time: "13:55 – 14:55", 
-          title: "Almuerzo Campestre", 
-          desc: "Experiencia culinaria local para recargar energías y continuar la conversación.",
+          title: "Almuerzo", 
+          desc: "Experiencia culinaria local para recargar energías.",
           takeaways: [],
           speaker: ""
         },
         { 
           id: "d1-b4",
           time: "14:55 – 16:15", 
-          title: "El Tercero en Discordia: Tecnología y Alianza (Modelo Winston)", 
+          title: "Trabajo con Wiston: Tecnología, Alianza y Vínculo", 
           speaker: "José Uribe & Lucas Uribe",
-          desc: "La terapia no ocurre en el vacío. Exploraremos cómo la tecnología (Wiston) y los factores extra-terapéuticos influyen radicalmente en la adherencia y el resultado del tratamiento. ¿Es la IA un aliado o una amenaza?",
+          desc: "Trabajo con Wiston por medio de tecnología alianza, abordando los factores que más inciden en que se genere el vínculo entre un cliente y su terapeuta. ¿Es la IA un aliado o una amenaza?",
           takeaways: [
               "Uso ético de herramientas digitales en psicoterapia.",
               "Estrategias para medir y mejorar la alianza terapéutica.",
@@ -149,7 +153,7 @@ const App: React.FC = () => {
         { 
           id: "d1-break2",
           time: "16:15 – 16:30", 
-          title: "Break de Tarde", 
+          title: "Break", 
           desc: "Pausa breve.",
           takeaways: [],
           speaker: ""
@@ -157,7 +161,7 @@ const App: React.FC = () => {
         { 
           id: "d1-b5",
           time: "16:30 – 18:00", 
-          title: "Arquitectura de lo Complejo: Familias Ensambladas", 
+          title: "Familias Ensambladas", 
           speaker: "Ps. Camila Señoret",
           desc: "Los tuyos, los míos y los nuestros. Un abordaje sistémico para navegar los desafíos únicos de las nuevas configuraciones familiares, donde las lealtades invisibles y los roles difusos suelen sabotear la armonía.",
           takeaways: [
@@ -166,18 +170,18 @@ const App: React.FC = () => {
               "Técnicas para establecer nuevas normas de convivencia."
           ]
         },
-        { 
-          id: "d1-social",
-          time: "20:00", 
-          title: "Sunset Mixology & Social", 
-          desc: "Clase maestra de tragos y espacio de distensión. El momento donde los colegas se convierten en amigos.",
-          takeaways: ["Conexión humana real", "Experiencia lúdica", "Relax"],
+        {
+          id: "d1-sunset",
+          time: "20:00",
+          title: "Sunset & Mixology",
+          desc: "Clase de tragos y momento de relajo para seguir compartiendo.",
+          takeaways: [],
           speaker: ""
-        },
+        }
       ]
     },
     {
-      day: "Día 2: Viernes 20 de Marzo",
+      day: "Día 2: Viernes 20 de Marzo (Cupos Agotados)",
       activities: [
         { 
           id: "d2-start",
@@ -204,37 +208,102 @@ const App: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-background-page text-text-main font-sans selection:bg-primary selection:text-text-dark overflow-x-hidden scroll-smooth">
+    <div className="min-h-screen bg-background-page text-text-main font-sans selection:bg-primary selection:text-white overflow-x-hidden scroll-smooth">
       <CustomCursor />
       <Navbar />
       
       <main className="pt-20">
         <Hero />
 
-        <section className="px-6 py-20 md:py-32 flex flex-col items-center text-center max-w-4xl mx-auto">
-          <div className="w-16 h-[2px] bg-primary mb-10 rounded-full shadow-glow"></div>
-          <h3 className="text-white tracking-tight text-2xl md:text-4xl font-light leading-snug italic max-w-2xl">
-            "La profundidad del encuentro humano es el arte <span className="font-bold text-primary not-italic">más sofisticado</span> que existe."
-          </h3>
-          <p className="text-text-muted text-xs md:text-sm mt-8 tracking-[0.4em] uppercase font-bold">
-            Un congreso de psicología de alto nivel
-          </p>
+        {/* PILLARS SECTION - Updated with specific SVGs from the brochure */}
+        <section className="grid grid-cols-2 md:grid-cols-4 w-full">
+            {/* 1. APRENDER (Teal) - Book Icon */}
+            <div 
+              onClick={() => scrollToSection('charlistas')}
+              className="bg-secondary p-8 aspect-square md:aspect-auto md:h-64 flex flex-col items-center justify-center text-center group hover:brightness-110 transition-all cursor-pointer"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-16 text-white mb-4 group-hover:scale-110 transition-transform">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
+                </svg>
+                <h3 className="text-white font-zalendo text-2xl uppercase tracking-wide">Aprender</h3>
+            </div>
+            
+            {/* 2. CRECER (Pink) - Head with Leaves Icon */}
+            <div 
+              onClick={() => scrollToSection('programa')}
+              className="bg-accent-pink p-8 aspect-square md:aspect-auto md:h-64 flex flex-col items-center justify-center text-center group hover:brightness-110 transition-all cursor-pointer"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-16 text-text-main mb-4 group-hover:scale-110 transition-transform">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6V3m0 0l-2 2m2-2l2 2" />
+                </svg>
+                <h3 className="text-text-main font-zalendo text-2xl uppercase tracking-wide">Crecer</h3>
+            </div>
+            
+            {/* 3. COMPARTIR (Yellow) - Campfire Icon */}
+            <div 
+              onClick={() => scrollToSection('glamping')}
+              className="bg-accent-yellow p-8 aspect-square md:aspect-auto md:h-64 flex flex-col items-center justify-center text-center group hover:brightness-110 transition-all cursor-pointer"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-16 text-text-main mb-4 group-hover:scale-110 transition-transform">
+                   <path strokeLinecap="round" strokeLinejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z" />
+                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 18a3.75 3.75 0 0 0 .495-7.468 5.99 5.99 0 0 0-1.925 3.547 5.975 5.975 0 0 1-2.133-1.001A3.75 3.75 0 0 0 12 18Z" />
+                </svg>
+                <h3 className="text-text-main font-zalendo text-2xl uppercase tracking-wide">Compartir</h3>
+            </div>
+            
+            {/* 4. DISFRUTAR (Orange/Red) - Wine Glasses Icon */}
+            <div 
+              onClick={() => {
+                setExpandedActivity('d1-sunset');
+                scrollToSection('d1-sunset');
+              }}
+              className="bg-accent-orange p-8 aspect-square md:aspect-auto md:h-64 flex flex-col items-center justify-center text-center group hover:brightness-110 transition-all cursor-pointer"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-16 text-white mb-4 group-hover:scale-110 transition-transform">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3a3.75 3.75 0 0 0-3.75 3.75v3.75a3.75 3.75 0 0 0 3.75 3.75h1.5a3.75 3.75 0 0 0 3.75-3.75V6.75A3.75 3.75 0 0 0 11.25 3h-1.5Z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 14.25v6.75m-3 0h6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M18.75 3a3.75 3.75 0 0 0-3.75 3.75v3.75a3.75 3.75 0 0 0 3.75 3.75h1.5a3.75 3.75 0 0 0 3.75-3.75V6.75A3.75 3.75 0 0 0 20.25 3h-1.5Z" transform="translate(4, 0)" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v6.75m-3 0h6" transform="translate(4, 0)" />
+                </svg>
+                <h3 className="text-white font-zalendo text-2xl uppercase tracking-wide">Disfrutar</h3>
+            </div>
         </section>
 
+        {/* LOCATION & DATE STRIP */}
         <section id="ubicacion" className="scroll-mt-24">
-          <div className="grid grid-cols-2 gap-px bg-white/10 border-y border-white/10 md:max-w-4xl md:mx-auto md:border-x shadow-sm">
-            <div className="bg-surface p-10 flex flex-col items-center text-center hover:bg-surface-highlight transition-colors group">
-              <span className="text-[10px] text-text-muted uppercase tracking-widest mb-1 font-semibold">Fecha</span>
-              <span className="text-sm md:text-xl font-bold text-white px-2">Jueves 19 y Viernes 20 de Marzo 2026</span>
-            </div>
-            <div className="bg-surface p-10 flex flex-col items-center text-center border-l border-white/10 hover:bg-surface-highlight transition-colors group">
-              <span className="text-[10px] text-text-muted uppercase tracking-widest mb-1 font-semibold">Lugar</span>
-              <span className="text-xl font-bold text-white">Monte Magdalena</span>
-            </div>
+          <div className="flex flex-col md:flex-row border-b-2 border-primary">
+             <div className="flex-1 bg-white p-10 flex flex-col items-center justify-center text-center border-b md:border-b-0 md:border-r border-primary/20 hover:bg-surface-highlight transition-colors">
+                 <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-2">faltan</span>
+                 {timeLeft ? (
+                   <div className="flex gap-2 md:gap-4 justify-center items-center font-zalendo text-2xl md:text-4xl text-text-main">
+                      <div className="flex flex-col items-center">
+                        <span>{String(timeLeft.days).padStart(2, '0')}</span>
+                        <span className="text-[10px] font-sans tracking-normal text-text-muted">DÍAS</span>
+                      </div>
+                      <span className="mb-4">:</span>
+                      <div className="flex flex-col items-center">
+                        <span>{String(timeLeft.hours).padStart(2, '0')}</span>
+                        <span className="text-[10px] font-sans tracking-normal text-text-muted">HRS</span>
+                      </div>
+                      <span className="mb-4">:</span>
+                      <div className="flex flex-col items-center">
+                        <span>{String(timeLeft.minutes).padStart(2, '0')}</span>
+                        <span className="text-[10px] font-sans tracking-normal text-text-muted">MIN</span>
+                      </div>
+                   </div>
+                 ) : (
+                    <p className="font-zalendo text-3xl md:text-4xl text-text-main">19 y 20 de Marzo, 2026</p>
+                 )}
+             </div>
+             <div className="flex-1 bg-white p-10 flex flex-col items-center justify-center text-center hover:bg-surface-highlight transition-colors">
+                 <span className="text-primary font-bold tracking-[0.2em] uppercase text-xs mb-2">Dónde</span>
+                 <p className="font-zalendo text-3xl md:text-4xl text-text-main">Guanacamp, Monte Magdalena</p>
+             </div>
           </div>
           
-          <div className="w-full md:max-w-4xl md:mx-auto h-[400px] md:h-[500px] bg-surface relative overflow-hidden mt-px border-b md:border-x border-white/10">
-            <iframe 
+          <div className="w-full h-[400px] relative overflow-hidden bg-gray-200">
+             <iframe 
               src="https://www.google.com/maps/embed?pb=!1m28!1m12!1m3!1d265562.70881936833!2d-70.93810297318348!3d-33.46706471140104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!4m13!3e0!4m5!1s0x9662cf19a8dab4bd%3A0x93c1479cef180269!2sLas%20Condes%2C%20Santiago%20Metropolitan%20Region!3m2!1d-33.416108799999996!2d-70.5340623!4m5!1s0x9662e2fdc6ccd665%3A0xe8cb7c9d17c75e09!2sMonte%20Magdalena%20-%20Unnamed%20Road%2C%20El%20Monte%2C%20Regi%C3%B3n%20Metropolitana!3m2!1d-33.669966699999996!2d-70.9618658!5e0!3m2!1sen!2scl!4v1770248257571!5m2!1sen!2scl" 
               width="100%" 
               height="100%" 
@@ -242,110 +311,98 @@ const App: React.FC = () => {
               allowFullScreen={true} 
               loading="lazy" 
               referrerPolicy="no-referrer-when-downgrade"
-              className="w-full h-full"
+              className="w-full h-full grayscale hover:grayscale-0 transition-all duration-700"
             ></iframe>
           </div>
         </section>
 
-        {/* SECTION: PROGRAMA REDISEÑADO CON ACORDEÓN */}
+        {/* SECTION: PROGRAMA - CLEAN CARD STYLE */}
         <section id="programa" className="px-6 py-20 md:max-w-5xl md:mx-auto scroll-mt-24">
           <div className="flex flex-col items-center mb-16 text-center">
             <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4">Itinerario</h2>
-            <h3 className="text-3xl md:text-5xl font-black uppercase text-white">Programa <span className="text-primary italic">Completo</span></h3>
+            <h3 className="text-3xl md:text-5xl font-black uppercase text-text-main font-zalendo">Programa <span className="text-secondary">Completo</span></h3>
           </div>
 
           <div className="relative">
              {programDays.map((day, idx) => (
               <div key={idx} className="mb-20 last:mb-0">
-                {/* Cabecera del Día Sticky */}
-                <div className="flex items-center gap-4 mb-8 sticky top-[72px] bg-background-page/95 backdrop-blur-xl z-30 py-4 border-b border-white/10 shadow-sm transition-all">
-                  <div className="size-3 rounded-full bg-primary shadow-glow animate-pulse"></div>
-                  <h4 className="text-2xl md:text-4xl font-zalendo uppercase text-white tracking-wide">
+                {/* Cabecera del Día */}
+                <div className="flex items-center gap-4 mb-8 sticky top-[72px] bg-background-page/95 backdrop-blur-xl z-30 py-4 border-b-2 border-primary/20">
+                  <div className="size-4 rounded-full bg-primary animate-pulse"></div>
+                  <h4 className="text-2xl md:text-4xl font-zalendo uppercase text-accent-yellow tracking-wide">
                     {day.day}
                   </h4>
                 </div>
                 
-                <div className="relative space-y-4">
-                   {/* Línea de tiempo móvil decorativa */}
-                   <div className="absolute left-[11px] top-4 bottom-4 w-px bg-gradient-to-b from-primary/50 via-white/10 to-transparent md:hidden"></div>
-            
+                <div className="space-y-4">
                    {day.activities.map((act, i) => {
                      const isExpanded = expandedActivity === act.id;
                      return (
-                     <div key={i} className="group relative pl-10 md:pl-0 reveal-on-scroll opacity-0 translate-y-4 transition-all duration-700">
-                        {/* Dot Móvil */}
-                        <div className={`absolute left-0 top-6 size-[23px] rounded-full border border-white/10 bg-surface flex items-center justify-center md:hidden z-10 transition-colors shadow-sm ${isExpanded ? 'border-primary' : 'group-hover:border-primary'}`}>
-                           <div className={`size-1.5 rounded-full transition-colors ${isExpanded ? 'bg-primary' : 'bg-white/30 group-hover:bg-primary'}`}></div>
-                        </div>
-            
+                     <div id={act.id} key={i} className="group relative reveal-on-scroll opacity-0 translate-y-4 transition-all duration-700">
                         <div 
                           onClick={() => toggleActivity(act.id)}
-                          className={`flex flex-col rounded-2xl border transition-all duration-500 cursor-pointer overflow-hidden ${
+                          className={`flex flex-col rounded-xl border-2 transition-all duration-300 cursor-pointer overflow-hidden bg-surface ${
                             isExpanded 
-                              ? 'bg-surface border-primary/40 shadow-glow' 
-                              : 'bg-surface/30 border-white/5 hover:bg-surface hover:border-primary/20 hover:shadow-lg hover:-translate-y-1'
+                              ? 'border-primary shadow-soft' 
+                              : 'border-transparent hover:border-secondary hover:shadow-lg shadow-sm'
                           }`}
                         >
                            {/* HEADER CARD */}
                            <div className="flex flex-col md:flex-row md:items-start gap-4 md:gap-8 p-6">
                              {/* Columna Hora */}
-                             <div className="md:w-40 shrink-0 pt-1 flex md:flex-col items-center md:items-start gap-3 md:gap-0">
-                                <span className={`font-zalendo text-3xl md:text-4xl transition-colors duration-500 block leading-none tracking-tighter ${isExpanded ? 'text-primary' : 'text-white/20 group-hover:text-primary'}`}>
+                             <div className="md:w-32 shrink-0 pt-1">
+                                <span className={`font-zalendo text-3xl md:text-4xl block leading-none tracking-tighter ${isExpanded ? 'text-primary' : 'text-gray-400 group-hover:text-secondary'}`}>
                                   {act.time.split(' – ')[0]}
                                 </span>
-                                <div className={`h-px w-8 my-2 hidden md:block transition-all duration-500 ${isExpanded ? 'w-full bg-primary' : 'bg-white/10 group-hover:w-full group-hover:bg-primary/30'}`}></div>
-                                <span className="text-xs text-text-muted font-mono tracking-widest uppercase opacity-60">
+                                <span className="text-xs text-text-muted font-bold tracking-widest uppercase mt-1 block">
                                    {act.time.includes('–') ? act.time.split(' – ')[1] : ''}
                                 </span>
                              </div>
                              
                              {/* Columna Titulo */}
-                             <div className="flex-1 border-l border-white/5 md:pl-8 md:border-l-0 md:pl-0 pl-4 flex justify-between items-start gap-4">
+                             <div className="flex-1 flex justify-between items-start gap-4">
                                 <div>
                                   {act.speaker && (
-                                    <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-primary mb-1">
+                                    <span className="inline-block px-2 py-1 bg-accent-pink/20 text-text-main text-[10px] font-bold uppercase tracking-wider rounded mb-2">
                                       {act.speaker}
-                                    </p>
+                                    </span>
                                   )}
-                                  <h5 className={`text-lg md:text-xl font-bold transition-colors leading-tight ${isExpanded ? 'text-white' : 'text-white group-hover:text-primary-light'}`}>
+                                  <h5 className={`text-lg md:text-xl font-bold leading-tight ${isExpanded ? 'text-text-main' : 'text-text-main group-hover:text-primary'}`}>
                                     {act.title}
                                   </h5>
                                   {!isExpanded && (
-                                    <p className="text-sm text-text-muted font-light leading-relaxed mt-2 line-clamp-2 opacity-80">
+                                    <p className="text-sm text-text-muted mt-2 line-clamp-2">
                                       {act.desc}
                                     </p>
                                   )}
                                 </div>
                                 
-                                {/* Unicode Hex Icon \ue5c8 (arrow_forward) replaced with interaction icon */}
-                                <div className={`hidden md:flex flex-col justify-center items-center self-center transform transition-all duration-500 ${isExpanded ? 'rotate-180 text-primary' : 'text-white/30 group-hover:text-primary group-hover:translate-x-2'}`}>
-                                     {/* Usamos el chevron unicode en vez de arrow_forward para indicar desplegable */}
-                                     <span className="material-symbols-outlined text-2xl">{"\ue5c8"}</span>
+                                <div className={`hidden md:flex flex-col justify-center items-center self-center transform transition-all duration-500 ${isExpanded ? 'rotate-180 text-primary' : 'text-gray-300 group-hover:text-secondary'}`}>
+                                     <span className="material-symbols-outlined text-3xl">{"\ue5c8"}</span>
                                 </div>
                              </div>
                            </div>
 
-                           {/* EXPANDED CONTENT (Accordion) */}
-                           <div className={`overflow-hidden transition-[max-height,opacity] duration-700 ease-in-out ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'}`}>
-                             <div className="p-6 pt-0 md:pl-[220px] pb-8 border-t border-white/5 mx-6 md:mx-0 mt-2">
+                           {/* EXPANDED CONTENT */}
+                           <div className={`overflow-hidden transition-[max-height,opacity] duration-700 ease-in-out bg-surface-highlight ${isExpanded ? 'max-h-[500px] opacity-100 border-t border-primary/10' : 'max-h-0 opacity-0'}`}>
+                             <div className="p-6 md:pl-[160px]">
                                 <div className="grid grid-cols-1 gap-6">
                                    <div>
-                                     <h6 className="text-xs text-text-muted uppercase tracking-widest font-bold mb-2">De qué trata</h6>
-                                     <p className="text-sm md:text-base text-white font-light leading-relaxed">
+                                     <p className="text-sm md:text-base text-text-main font-medium leading-relaxed">
                                        {act.desc}
                                      </p>
                                    </div>
                                    
                                    {act.takeaways && act.takeaways.length > 0 && (
-                                     <div className="bg-black/20 p-4 rounded-xl border border-white/5">
-                                       <h6 className="text-[10px] text-primary uppercase tracking-[0.2em] font-bold mb-3 flex items-center gap-2">
-                                         <span className="material-symbols-outlined text-sm">{"\ue8d0"}</span> {/* lightbulb icon */}
+                                     <div className="bg-white p-5 rounded-lg border-l-4 border-accent-yellow shadow-sm">
+                                       <h6 className="text-[10px] text-text-muted uppercase tracking-[0.2em] font-bold mb-3 flex items-center gap-2">
+                                         <span className="material-symbols-outlined text-accent-yellow text-sm">{"\ue8d0"}</span>
                                          Lo que te llevarás
                                        </h6>
                                        <ul className="space-y-2">
                                          {act.takeaways.map((takeaway, tIdx) => (
-                                           <li key={tIdx} className="flex items-start gap-2 text-sm text-gray-300 font-light">
-                                             <span className="text-primary mt-1 text-[8px]">●</span>
+                                           <li key={tIdx} className="flex items-start gap-3 text-sm text-gray-700">
+                                             <span className="text-secondary mt-1 text-xs">●</span>
                                              {takeaway}
                                            </li>
                                          ))}
@@ -364,230 +421,81 @@ const App: React.FC = () => {
           </div>
         </section>
         
-        {/* NEW SECTION: WHY ATTEND */}
-        <section id="por-que-asistir" className="px-6 py-20 bg-background-page relative overflow-hidden">
-            <div className="max-w-5xl mx-auto">
+        {/* WHY ATTEND - RESTORED TO ICON-IN-CIRCLE STYLE AS REQUESTED */}
+        <section id="por-que-asistir" className="px-6 py-20 bg-white relative overflow-hidden">
+            <div className="max-w-6xl mx-auto">
                 <div className="flex flex-col items-center mb-16 text-center">
                     <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4">La Esencia</h2>
-                    <h3 className="text-3xl md:text-5xl font-black uppercase text-white">¿Por qué <span className="text-primary italic">Asistir?</span></h3>
+                    <h3 className="text-3xl md:text-5xl font-black uppercase text-text-main font-zalendo">¿Por qué <span className="text-accent-orange italic">Asistir?</span></h3>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {/* Card 1 - hub -> \ue9f4 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '0ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
-                            <span className="material-symbols-outlined">{"\ue9f4"}</span>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {/* Items styled with the distinct icon circle layout from version 1 */}
+                    {[
+                        { icon: "\ue9f4", color: "text-secondary", title: "Más allá de un modelo", desc: "No nos limitamos a un solo modelo teórico." },
+                        { icon: "\ue8e8", color: "text-primary", title: "Sello Clínico Homogéneo", desc: "Cuidamos meticulosamente que todo el programa se centre en las últimas investigaciones y congresos internacionales." },
+                        { icon: "\uf233", color: "text-accent-pink", title: "Intimidad Exclusiva", desc: "Valoramos la conversación y la reflexión, no es un congreso masivo, es un encuentro entre quienes queremos compartir." },
+                        { icon: "\ue04b", color: "text-accent-orange", title: "Sin Grabaciones", desc: "Lo que pasa en el camp, queda en el camp. Privacidad total." },
+                        { icon: "\ue3b6", color: "text-secondary", title: "Un Formato Inédito", desc: "Un congreso único en Monte Magdalena. Desconectar para conectar." }
+                    ].map((item, idx) => (
+                        <div key={idx} className="bg-background-page p-8 rounded-2xl border border-gray-100 shadow-sm hover:shadow-soft hover:border-primary/20 hover:-translate-y-2 transition-all duration-300 group">
+                            <div className="size-14 rounded-full bg-white border border-gray-100 flex items-center justify-center text-primary mb-6 group-hover:scale-110 transition-transform shadow-sm">
+                                <span className={`material-symbols-outlined text-3xl ${item.color}`}>{item.icon}</span>
+                            </div>
+                            <h4 className="text-lg font-bold text-text-main mb-3 font-zalendo uppercase">{item.title}</h4>
+                            <p className="text-sm text-text-muted leading-relaxed">
+                                {item.desc}
+                            </p>
                         </div>
-                        <h4 className="text-lg font-bold text-white mb-2">Más allá de un modelo</h4>
-                        <p className="text-sm text-text-muted leading-relaxed font-light">
-                            No nos limitamos a una sola línea. Abordamos lo relacional con foco en el criterio y la práctica, integrando visiones diversas sin perder profundidad.
-                        </p>
-                    </div>
-
-                    {/* Card 2 - verified -> \ue8e8 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '150ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
-                            <span className="material-symbols-outlined">{"\ue8e8"}</span>
-                        </div>
-                        <h4 className="text-lg font-bold text-white mb-2">Sello Clínico Homogéneo</h4>
-                        <p className="text-sm text-text-muted leading-relaxed font-light">
-                            Cuidamos meticulosamente que todo el programa mantenga un foco clínico riguroso, bajo el sello de calidad de CACH y LFQQ.
-                        </p>
-                    </div>
-
-                    {/* Card 3 - groups -> \uf233 */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '300ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
-                            <span className="material-symbols-outlined">{"\uf233"}</span>
-                        </div>
-                        <h4 className="text-lg font-bold text-white mb-2">Intimidad Exclusiva</h4>
-                        <p className="text-sm text-text-muted leading-relaxed font-light">
-                            ¿Por qué tan cerrado? Para garantizar un espacio real de trabajo, conversación y disfrute que los eventos masivos no pueden ofrecer.
-                        </p>
-                    </div>
-
-                    {/* Card 4 - psychology_alt -> \uf8ea */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '450ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
-                            <span className="material-symbols-outlined">{"\uf8ea"}</span>
-                        </div>
-                        <h4 className="text-lg font-bold text-white mb-2">Clínico-Experiencial</h4>
-                        <p className="text-sm text-text-muted leading-relaxed font-light">
-                             Mucha experiencia, pero siempre al servicio del criterio clínico. Menos académico-teórico, más práctico y aplicado.
-                        </p>
-                    </div>
-
-                    {/* Card 5 - videocam_off -> \ue04b */}
-                    <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '600ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
-                            <span className="material-symbols-outlined">{"\ue04b"}</span>
-                        </div>
-                        <h4 className="text-lg font-bold text-white mb-2">Sin Grabaciones</h4>
-                        <p className="text-sm text-text-muted leading-relaxed font-light">
-                             Lo que pasa en el camp, queda en el camp. No grabamos para proteger el espacio clínico, la privacidad y la calidad de la experiencia.
-                        </p>
-                    </div>
-
-                     {/* Card 6 - landscape -> \ue3b6 */}
-                     <div className="bg-surface p-8 rounded-2xl border border-white/10 hover:border-primary/30 transition-all duration-300 hover:-translate-y-1 group reveal-on-scroll opacity-0 translate-y-8" data-animate="animate-card-entry" style={{ animationDelay: '750ms' }}>
-                        <div className="size-10 rounded-full bg-white/5 flex items-center justify-center text-primary mb-4 group-hover:scale-110 transition-transform select-none">
-                            <span className="material-symbols-outlined">{"\ue3b6"}</span>
-                        </div>
-                        <h4 className="text-lg font-bold text-white mb-2">Un Formato Inédito</h4>
-                        <p className="text-sm text-text-muted leading-relaxed font-light">
-                             Un congreso único en Monte Magdalena. Traemos aprendizajes internacionales a un ambiente relajado que permite desconectar para conectar.
-                        </p>
-                    </div>
+                    ))}
                 </div>
             </div>
         </section>
 
-        <ExperienceCard />
+        <div id="glamping">
+            <ExperienceCard />
+        </div>
         <Exponents />
 
-        <section id="novedades" className="px-6 py-20 bg-surface scroll-mt-24 border-y border-white/10">
+        <section id="novedades" className="px-6 py-20 bg-background-page scroll-mt-24">
            <div className="md:max-w-4xl md:mx-auto">
             <div className="flex items-center gap-4 mb-10">
               <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary">Novedades</h2>
-              <div className="h-px bg-white/10 flex-1"></div>
+              <div className="h-px bg-gray-300 flex-1"></div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="bg-background-page p-6 rounded-2xl border border-white/10 hover:border-primary/30 transition-colors shadow-sm group">
-                <p className="text-[10px] text-primary font-bold uppercase mb-2">Marzo 05</p>
-                <h4 className="font-bold mb-2 text-white group-hover:text-primary transition-colors">Cupos de Glamping Agotados</h4>
+              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:border-accent-pink transition-colors group">
+                <p className="text-[10px] text-accent-pink font-bold uppercase mb-2">Marzo 05</p>
+                <h4 className="font-bold mb-2 text-text-main group-hover:text-primary transition-colors">Cupos de Glamping Agotados</h4>
                 <p className="text-sm text-text-muted">Debido a la alta demanda, las plazas premium de glamping han sido completadas.</p>
               </div>
-              <div className="bg-background-page p-6 rounded-2xl border border-white/10 hover:border-primary/30 transition-colors shadow-sm group">
-                <p className="text-[10px] text-primary font-bold uppercase mb-2">Febrero 28</p>
-                <h4 className="font-bold mb-2 text-white group-hover:text-primary transition-colors">Nueva Experiencia de Mixología</h4>
+              <div className="bg-white p-6 rounded-xl border border-gray-100 shadow-sm hover:border-accent-yellow transition-colors group">
+                <p className="text-[10px] text-accent-yellow font-bold uppercase mb-2">Febrero 28</p>
+                <h4 className="font-bold mb-2 text-text-main group-hover:text-primary transition-colors">Nueva Experiencia de Mixología</h4>
                 <p className="text-sm text-text-muted">Confirmamos la participación de maestros mixólogos.</p>
               </div>
             </div>
            </div>
         </section>
 
-        <section className="px-6 pb-32 pt-20 max-w-5xl mx-auto">
-          <div className="flex flex-col items-center mb-16 text-center">
-            <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4">Detalles Clave</h2>
-            <h3 className="text-3xl md:text-4xl font-black uppercase text-white">Ficha <span className="text-primary italic">Técnica</span></h3>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            {/* CARD FECHA - Ahora linkeada a Pago/Inscripción */}
-            <a
-              href={DAILY_PASS_LINK}
-              target="_blank"
-              rel="noopener noreferrer" 
-              className="relative overflow-hidden rounded-3xl border border-white/10 shadow-soft group transition-all duration-700 hover:shadow-[0_20px_50px_-12px_rgba(220,189,161,0.15)] hover:-translate-y-2 min-h-[350px] flex flex-col justify-between p-8 md:p-10 bg-surface cursor-pointer"
-            >
-              {/* Background Decor */}
-              <div className="absolute top-0 right-0 p-8 opacity-5 text-white pointer-events-none select-none">
-                 <span className="text-9xl font-black tracking-tighter">19</span>
-              </div>
-              
-              <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
-
-              <div className="relative z-10 flex items-start justify-between">
-                {/* calendar_month -> \uebcc */}
-                <div className="size-12 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-primary group-hover:scale-110 transition-transform duration-500 select-none">
-                    <span className="material-symbols-outlined">{"\uebcc"}</span>
-                </div>
-                {/* north_east -> \uf1e5 */}
-                <div className="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-black transition-all duration-500 shadow-lg group-hover:rotate-12 select-none">
-                    <span className="material-symbols-outlined">{"\uf1e5"}</span>
-                </div>
-              </div>
-              
-              <div className="relative z-10 mt-auto">
-                <div className="space-y-3 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-500">
-                  <p className="text-xs text-text-muted uppercase tracking-[0.2em] font-medium">Fecha del Evento</p>
-                  <h4 className="text-3xl md:text-4xl font-black text-white leading-none">19 - 20<br/><span className="text-white/50">Marzo 2026</span></h4>
-                  <p className="text-sm text-text-muted font-light pt-2">Jueves y Viernes · 09:00 - 18:00 hrs</p>
-                  
-                  {timeLeft && (
-                    <div className="pt-8 mt-6 border-t border-white/10">
-                      <div className="grid grid-cols-3 gap-4">
-                        <div className="flex flex-col">
-                          <span className="text-4xl md:text-6xl font-black text-white">{timeLeft.days}</span> 
-                          <span className="text-[10px] text-primary uppercase tracking-widest">Días</span>
-                        </div>
-                        <div className="flex flex-col border-l border-white/10 pl-4">
-                          <span className="text-4xl md:text-6xl font-black text-white">{timeLeft.hours}</span> 
-                          <span className="text-[10px] text-primary uppercase tracking-widest">Hrs</span>
-                        </div>
-                        <div className="flex flex-col border-l border-white/10 pl-4">
-                          <span className="text-4xl md:text-6xl font-black text-white">{timeLeft.minutes}</span> 
-                          <span className="text-[10px] text-primary uppercase tracking-widest">Min</span>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                </div>
-              </div>
-            </a>
-
-            {/* CARD UBICACION */}
-            <a 
-              href={MAPS_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="relative overflow-hidden rounded-3xl border border-white/10 shadow-soft group transition-all duration-700 hover:shadow-glow hover:border-primary/30 min-h-[350px] flex flex-col justify-end p-8 md:p-10 cursor-pointer"
-            >
-              <div className="absolute inset-0 overflow-hidden rounded-3xl">
-                <img 
-                  src={PATH_IMAGE} 
-                  alt="Monte Magdalena" 
-                  className="w-full h-full object-cover transition-transform duration-[2000ms] ease-out group-hover:scale-110 opacity-60 group-hover:opacity-80" 
-                />
-                 {/* Parallax-like gradient overlay that stays fixed relative to container */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background-page via-background-page/60 to-transparent opacity-90 group-hover:opacity-80 transition-opacity duration-500"></div>
-              </div>
-              
-              <div className="relative z-10 w-full">
-                <div className="mb-auto flex justify-end">
-                    {/* north_east -> \uf1e5 */}
-                    <div className="size-12 rounded-full bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-white group-hover:bg-primary group-hover:text-black transition-all duration-500 shadow-lg group-hover:rotate-12 select-none">
-                         <span className="material-symbols-outlined">{"\uf1e5"}</span>
-                    </div>
-                </div>
-
-                <div className="mt-20 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                  <div className="flex items-center gap-2 mb-3 opacity-80 group-hover:opacity-100 transition-opacity">
-                      {/* location_on -> \ue0c8 */}
-                      <span className="material-symbols-outlined text-primary text-xl">{"\ue0c8"}</span>
-                      <p className="text-xs text-primary uppercase tracking-[0.2em] font-bold">Ubicación</p>
-                  </div>
-                  <h4 className="text-3xl md:text-4xl font-black text-white leading-tight mb-2">Monte Magdalena</h4>
-                  <p className="text-sm text-gray-300 font-light max-w-xs group-hover:text-white transition-colors">
-                    Un santuario natural en la precordillera. El escenario perfecto para la desconexión y el aprendizaje.
-                  </p>
-                </div>
-              </div>
-            </a>
-
-          </div>
-        </section>
-
         {/* Footer Organizers */}
-        <footer className="px-6 py-20 border-t border-white/10 bg-background-page">
+        <footer className="px-6 py-20 border-t border-gray-200 bg-white">
           <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
              <p className="text-[10px] text-text-muted uppercase tracking-[0.3em] mb-12 font-semibold">Organizan</p>
-             <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16">
-                {/* Logos */}
+             <div className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 grayscale hover:grayscale-0 transition-all duration-500 opacity-70 hover:opacity-100">
+                {/* Logos - removing invert filter since background is now light */}
                 <img 
                   src="https://www.clinicadeansiedad.cl/wp-content/uploads/2024/01/Logo-300-CACH-negro.png" 
                   alt="Clínica de Ansiedad Chile" 
-                  className="h-12 md:h-16 w-auto object-contain opacity-70 hover:opacity-100 transition-all duration-500 hover:scale-110 invert brightness-200"
+                  className="h-12 md:h-16 w-auto object-contain hover:scale-110 transition-transform"
                 />
                 
-                {/* Divider */}
-                <div className="w-16 h-px bg-white/20 md:w-px md:h-12"></div>
+                <div className="w-16 h-px bg-gray-300 md:w-px md:h-12"></div>
 
                 <img 
                   src="https://encuadrado-user-uploads.s3.amazonaws.com/cover_photos/user-9080-cover.png" 
                   alt="La Familia Que Quiero" 
-                  className="h-12 md:h-16 w-auto object-contain opacity-70 hover:opacity-100 transition-all duration-500 hover:scale-110 brightness-125"
+                  className="h-12 md:h-16 w-auto object-contain hover:scale-110 transition-transform"
                 />
              </div>
              <p className="text-[10px] text-text-muted mt-16">© 2026 Conecta-Camp · Monte Magdalena</p>
@@ -598,13 +506,13 @@ const App: React.FC = () => {
 
       <GeminiConcierge />
 
-      <div id="registro" className="fixed bottom-0 left-0 right-0 p-6 bg-background-page/90 backdrop-blur-lg border-t border-white/10 z-[50]">
+      <div id="registro" className="fixed bottom-0 left-0 right-0 p-6 bg-white/90 backdrop-blur-lg border-t border-gray-200 z-[50]">
         <div className="max-w-md mx-auto flex flex-col gap-3">
           <a 
             href={REGISTRATION_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-primary text-text-dark font-black py-4 rounded-xl uppercase tracking-[0.2em] text-center text-xs md:text-sm shadow-glow hover:scale-[1.02] active:scale-[0.98] transition-all transform-gpu flex items-center justify-center gap-3"
+            className="w-full bg-primary text-white font-black py-4 rounded-xl uppercase tracking-[0.2em] text-center text-xs md:text-sm shadow-soft hover:scale-[1.02] active:scale-[0.98] transition-all transform-gpu flex items-center justify-center gap-3 hover:bg-primary-dark"
           >
             FORMULARIO DE INSCRIPCIÓN
           </a>
@@ -613,7 +521,7 @@ const App: React.FC = () => {
             href={DAILY_PASS_LINK}
             target="_blank"
             rel="noopener noreferrer"
-            className="w-full bg-white/5 border border-white/10 text-white font-bold py-3 rounded-xl uppercase tracking-[0.2em] text-center text-[10px] md:text-xs hover:bg-white/10 hover:scale-[1.02] active:scale-[0.98] transition-all transform-gpu flex items-center justify-center gap-2"
+            className="w-full bg-accent-yellow border border-accent-yellow text-text-main font-bold py-3 rounded-xl uppercase tracking-[0.2em] text-center text-[10px] md:text-xs hover:bg-accent-yellow/90 hover:scale-[1.02] active:scale-[0.98] transition-all transform-gpu flex items-center justify-center gap-2"
           >
              COMPRAR PASE DIARIO
           </a>
@@ -624,20 +532,11 @@ const App: React.FC = () => {
 
       <style>{`
         @keyframes fadeInUp {
-          0% { opacity: 0; transform: translateY(50px); }
+          0% { opacity: 0; transform: translateY(30px); }
           100% { opacity: 1; transform: translateY(0); }
         }
         .animate-fade-in-up {
-          animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        @keyframes cardEntry {
-            0% { opacity: 0; transform: translateY(40px) scale(0.95); filter: blur(5px); }
-            100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
-        }
-        .animate-card-entry {
-            animation: cardEntry 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
-            will-change: transform, opacity, filter;
+          animation: fadeInUp 1.0s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
         .animation-delay-200 { animation-delay: 0.2s; }

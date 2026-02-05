@@ -74,7 +74,6 @@ const Exponents: React.FC = () => {
     }, 500);
   };
 
-  // Lock scroll when modal is open
   useEffect(() => {
     if (selectedExponent) {
       document.body.style.overflow = 'hidden';
@@ -82,23 +81,22 @@ const Exponents: React.FC = () => {
       document.body.style.overflow = 'unset';
     }
     
-    // Close on Escape key
     const handleEsc = (e: KeyboardEvent) => {
       if (e.key === 'Escape') handleClose();
     };
     window.addEventListener('keydown', handleEsc);
     return () => window.removeEventListener('keydown', handleEsc);
-  }, [selectedExponent]); // Removed isClosing from deps to avoid re-binding during close anim
+  }, [selectedExponent]);
 
   return (
     <section id="charlistas" className="px-6 py-20 md:max-w-6xl md:mx-auto scroll-mt-24">
       <div className="flex flex-col items-center mb-16 text-center">
-        <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4 animate-fade-in-up">Nuestros Exponentes</h2>
-        <h3 className="text-3xl md:text-5xl font-black uppercase opacity-0 animate-fade-in-up animation-delay-200 text-white">
-          Mentes que <span className="text-primary italic">conectan</span>
+        <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4 animate-fade-in-up">Equipo</h2>
+        <h3 className="text-3xl md:text-5xl font-black uppercase opacity-0 animate-fade-in-up animation-delay-200 text-text-main font-zalendo">
+          Conoce a nuestros <span className="text-accent-orange italic">exponentes</span>
         </h3>
         <p className="text-text-muted mt-4 max-w-lg text-sm md:text-base opacity-0 animate-fade-in-up animation-delay-400">
-          Un panel de profesionales líderes seleccionados para transformar tu visión de los vínculos humanos.
+          Un grupo de profesionales con amplia trayectoria clínica, que trabajan día a día con personas, familias y sistemas, desde una mirada actual y humana.
         </p>
       </div>
 
@@ -107,31 +105,27 @@ const Exponents: React.FC = () => {
           <div 
             key={idx} 
             onClick={() => setSelectedExponent(speaker)}
-            className="group relative p-8 rounded-2xl bg-surface border border-white/10 shadow-soft hover:shadow-lg hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 flex flex-col items-start justify-start min-h-[220px] cursor-pointer"
+            className="group relative p-8 rounded-xl bg-surface border border-gray-100 shadow-sm hover:shadow-soft hover:border-primary/20 hover:-translate-y-2 transition-all duration-300 flex flex-col items-start justify-start min-h-[220px] cursor-pointer"
           >
             <div className="mb-6 relative">
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors duration-500 bg-background-page relative">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-primary/10 group-hover:border-primary transition-colors duration-500 bg-background-page relative">
                 <img 
-                  src={speaker.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(speaker.name)}&background=6ee7b7&color=475569&size=128&bold=true`} 
+                  src={speaker.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(speaker.name)}&background=6B5B95&color=ffffff&size=128&bold=true`} 
                   alt={speaker.name}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 opacity-90 group-hover:opacity-100"
+                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 transition-all duration-500"
                 />
                 
-                {/* Play Icon if video exists */}
                 {speaker.videoUrl && (
-                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-transparent transition-all">
-                        <div className="size-8 rounded-full bg-primary/90 text-background-page flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/10 group-hover:bg-transparent transition-all">
+                        <div className="size-8 rounded-full bg-primary text-white flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
                             <span className="material-symbols-outlined !text-lg">play_arrow</span>
                         </div>
                     </div>
                 )}
               </div>
-              <div className="absolute -bottom-1 -right-1 bg-primary text-surface text-[10px] font-bold px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm">
-                 {speaker.videoUrl ? 'VER VIDEO' : 'VER INFO'}
-              </div>
             </div>
 
-            <h4 className="text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-primary transition-colors duration-300 decoration-primary/30 group-hover:underline underline-offset-4 decoration-1">
+            <h4 className="text-xl font-bold mb-2 text-text-main group-hover:text-primary transition-colors font-zalendo uppercase">
               {speaker.name}
             </h4>
             <p className="text-text-muted text-xs font-medium leading-relaxed max-w-[200px]">
@@ -141,26 +135,25 @@ const Exponents: React.FC = () => {
         ))}
       </div>
 
-      {/* Modal Overlay with Glow Effect */}
+      {/* Modal Overlay */}
       {selectedExponent && (
         <div 
-          className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-background-page/60 backdrop-blur-xl ${isClosing ? 'animate-overlay-disappear' : 'animate-overlay-appear'}`}
-          style={{ backgroundImage: 'radial-gradient(circle at center, rgba(220, 189, 161, 0.15), rgba(43, 38, 36, 0.8))' }}
+          className={`fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/20 backdrop-blur-md ${isClosing ? 'animate-overlay-disappear' : 'animate-overlay-appear'}`}
           onClick={handleClose}
         >
           <div 
-            className={`bg-surface border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col md:flex-row ${isClosing ? 'animate-modal-slide-out' : 'animate-modal-slide-up'}`}
+            className={`bg-white rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col md:flex-row ${isClosing ? 'animate-modal-slide-out' : 'animate-modal-slide-up'}`}
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={handleClose}
-              className="absolute top-4 right-4 z-10 size-10 rounded-full bg-background-page/80 hover:bg-white/10 text-white flex items-center justify-center transition-colors border border-white/10 shadow-sm"
+              className="absolute top-4 right-4 z-10 size-10 rounded-full bg-white/50 hover:bg-gray-200 text-text-main flex items-center justify-center transition-colors border border-gray-200 shadow-sm"
             >
               <span className="material-symbols-outlined">close</span>
             </button>
 
             {/* Media Side (Video or Image) */}
-            <div className="md:w-1/2 h-64 md:h-auto relative bg-black flex items-center justify-center overflow-hidden">
+            <div className="md:w-1/2 h-64 md:h-auto relative bg-gray-100 flex items-center justify-center overflow-hidden">
                {selectedExponent.videoUrl ? (
                    <video 
                      controls 
@@ -172,31 +165,31 @@ const Exponents: React.FC = () => {
                    </video>
                ) : (
                   <img 
-                    src={selectedExponent.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedExponent.name)}&background=6ee7b7&color=475569&size=128&bold=true`}
+                    src={selectedExponent.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedExponent.name)}&background=6B5B95&color=ffffff&size=128&bold=true`}
                     alt={selectedExponent.name}
-                    className="w-full h-full object-cover grayscale opacity-90"
+                    className="w-full h-full object-cover"
                   />
                )}
             </div>
 
             {/* Content Side */}
-            <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center bg-surface">
-              <p className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-2">
+            <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center bg-white">
+              <p className="text-secondary text-xs font-bold tracking-[0.2em] uppercase mb-2">
                 {selectedExponent.role}
               </p>
-              <h3 className="text-3xl md:text-4xl font-black mb-4 text-white">
+              <h3 className="text-3xl md:text-4xl font-black mb-4 text-text-main font-zalendo uppercase">
                 {selectedExponent.name}
               </h3>
-              <div className="w-12 h-1 bg-primary mb-6"></div>
+              <div className="w-12 h-1 bg-accent-yellow mb-6"></div>
               
               <div className="space-y-4 text-text-muted leading-relaxed font-light text-sm md:text-base">
                 <p>{selectedExponent.bio || "Información biográfica no disponible por el momento."}</p>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-white/10 flex gap-4">
+              <div className="mt-8 pt-6 border-t border-gray-100 flex gap-4">
                  <div className="flex flex-col">
                     <span className="text-[10px] text-text-muted uppercase tracking-widest mb-1 font-bold">Especialidad</span>
-                    <span className="text-sm font-medium text-white">{selectedExponent.specialty}</span>
+                    <span className="text-sm font-medium text-text-main">{selectedExponent.specialty}</span>
                  </div>
               </div>
             </div>
@@ -210,18 +203,18 @@ const Exponents: React.FC = () => {
           href="https://www.instagram.com/clinicadeansiedad/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-surface border border-white/10 shadow-soft hover:bg-background-page hover:scale-[1.02] active:scale-[0.98] transition-all group w-full md:w-auto"
+          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border border-gray-200 shadow-sm hover:border-primary transition-all group w-full md:w-auto hover:-translate-y-1"
         >
-          <span className="text-white font-medium group-hover:text-primary transition-colors">@clinicadeansiedad</span>
+          <span className="text-text-main font-medium group-hover:text-primary transition-colors">@clinicadeansiedad</span>
         </a>
 
         <a 
           href="https://www.instagram.com/la_familia_que_quiero/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-surface border border-white/10 shadow-soft hover:bg-background-page hover:scale-[1.02] active:scale-[0.98] transition-all group w-full md:w-auto"
+          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white border border-gray-200 shadow-sm hover:border-primary transition-all group w-full md:w-auto hover:-translate-y-1"
         >
-          <span className="text-white font-medium group-hover:text-primary transition-colors">@la_familia_que_quiero</span>
+          <span className="text-text-main font-medium group-hover:text-primary transition-colors">@la_familia_que_quiero</span>
         </a>
       </div>
 

@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Conecta-Camp | Cinematic Experience</title>
+    <title>Conecta-Camp | Encuentro de Actualización</title>
     <!-- Mantenemos Tailwind vía CDN -->
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
@@ -15,23 +15,29 @@
         theme: {
           extend: {
             colors: {
-              "primary": "#dcbda1", /* Warm Sand / Clay - Acento principal */
-              "primary-light": "#f0e6dd", /* Pale Sand */
-              "primary-dark": "#a88b73", /* Darker Clay */
-              "background-page": "#2b2624", /* Deep Umber / Black-Brown - Fondo principal */
-              "surface": "#463e39", /* Mocha / Dark Taupe - Tarjetas */
-              "surface-highlight": "#5e534d", /* Lighter Mocha - Hovers */
-              "text-main": "#ffffff", /* Blanco */
-              "text-muted": "#a89f99", /* Warm Grey / Taupe */
-              "text-dark": "#1f1a18", /* Almost Black - Para texto sobre acento claro */
+              "background-page": "#FFF8F0", /* Cream / Off-White (Poster Background) */
+              "primary": "#6B5B95", /* Poster Purple - Main Header */
+              "primary-dark": "#4a3b70",
+              "secondary": "#66B2B2", /* Teal (Aprender) */
+              "accent-pink": "#F6CACA", /* Pink (Crecer) */
+              "accent-yellow": "#F3B340", /* Mustard (Compartir) */
+              "accent-orange": "#E87A5D", /* Terra Cotta (Disfrutar) */
+              
+              "surface": "#FFFFFF", /* White Cards */
+              "surface-highlight": "#F9F4EF",
+              
+              "text-main": "#2D2D2D", /* Dark Gray */
+              "text-muted": "#666666", /* Medium Gray */
+              "text-light": "#FFFFFF", /* White text for colored blocks */
             },
             fontFamily: {
               "sans": ["Inter", "sans-serif"],
               "zalendo": ["Oswald", "sans-serif"]
             },
             boxShadow: {
-              'soft': '0 4px 20px -2px rgba(31, 26, 24, 0.4)',
-              'glow': '0 0 25px rgba(220, 189, 161, 0.3)', /* Glow color Arena */
+              'soft': '0 4px 20px -2px rgba(107, 91, 149, 0.15)', /* Purple tinted shadow */
+              'card': '4px 4px 0px 0px rgba(0,0,0,1)', /* Brutalist/Retro shadow option if needed, keeping soft for now but cleaner */
+              'glow': '0 0 15px rgba(107, 91, 149, 0.3)',
             }
           }
         }
@@ -42,21 +48,21 @@
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
       }
       body {
-        background-color: #2b2624;
-        color: #ffffff;
+        background-color: #FFF8F0;
+        color: #2D2D2D;
       }
       ::-webkit-scrollbar {
-        width: 6px;
+        width: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #2b2624;
+        background: #FFF8F0;
       }
       ::-webkit-scrollbar-thumb {
-        background: #463e39; 
-        border-radius: 10px;
+        background: #6B5B95; 
+        border-radius: 4px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #dcbda1;
+        background: #4a3b70;
       }
     </style>
   <script type="importmap">
@@ -77,4 +83,3 @@
     <script type="module" src="/index.tsx"></script>
   </body>
 </html>
-    
