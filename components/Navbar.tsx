@@ -25,8 +25,6 @@ const Navbar: React.FC = () => {
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     e.preventDefault();
     setIsMenuOpen(false);
-    
-    // Pequeño timeout para permitir que el menú comience a cerrarse y el body recupere el scroll
     setTimeout(() => {
       const element = document.querySelector(href);
       if (element) {
@@ -37,13 +35,13 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-[70] bg-black py-2 border-b border-white/5">
-        <p className="text-center text-[10px] font-bold tracking-[0.4em] uppercase text-white/40">
+      <div className="fixed top-0 left-0 right-0 z-[70] bg-background-page py-2 border-b border-white/5">
+        <p className="text-center text-[10px] font-bold tracking-[0.4em] uppercase text-text-muted">
           Un congreso de psicología de alto nivel
         </p>
       </div>
 
-      <nav className="fixed top-[33px] left-0 right-0 z-[60] flex items-center bg-background-dark/80 backdrop-blur-md p-4 justify-between border-b border-white/5">
+      <nav className="fixed top-[33px] left-0 right-0 z-[60] flex items-center bg-surface/90 backdrop-blur-md p-4 justify-between border-b border-white/10 shadow-sm">
         <button 
           onClick={() => setIsMenuOpen(true)}
           className="text-white flex size-10 shrink-0 items-center justify-center cursor-pointer hover:text-primary transition-colors group"
@@ -57,22 +55,21 @@ const Navbar: React.FC = () => {
           </p>
         </div>
 
+        {/* Espaciador para mantener el centrado del texto, vacío tras eliminar el botón */}
         <div className="flex size-10 items-center justify-end">
-          <a href={REGISTRATION_LINK} target="_blank" rel="noopener noreferrer" className="flex cursor-pointer items-center justify-center rounded-xl h-10 w-10 bg-transparent text-primary hover:bg-white/5 transition-all" title="Inscribirse">
-            <span className="material-symbols-outlined">app_registration</span>
-          </a>
         </div>
       </nav>
 
+      {/* Mobile Menu Overlay - Mauve Theme */}
       <div 
-        className={`fixed inset-0 z-[100] bg-background-dark/95 backdrop-blur-xl transition-all duration-500 flex flex-col ${
+        className={`fixed inset-0 z-[100] bg-background-page/95 backdrop-blur-xl transition-all duration-500 flex flex-col ${
           isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
       >
         <div className="p-4 flex justify-end">
           <button 
             onClick={() => setIsMenuOpen(false)}
-            className="size-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/5 transition-colors"
+            className="size-12 rounded-full border border-white/10 flex items-center justify-center text-white hover:bg-white/10 transition-colors"
           >
             <span className="material-symbols-outlined">close</span>
           </button>
@@ -100,22 +97,22 @@ const Navbar: React.FC = () => {
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}
-              className="bg-primary text-black font-black px-12 py-4 rounded-2xl uppercase tracking-widest text-xs shadow-[0_0_20px_rgba(19,236,109,0.3)] flex items-center gap-2"
+              className="bg-primary text-text-dark font-black px-12 py-4 rounded-2xl uppercase tracking-widest text-xs shadow-glow flex items-center gap-2 hover:bg-white transition-colors"
             >
               <span className="material-symbols-outlined !text-sm">app_registration</span>
               Inscribirme Ahora
             </a>
             
-            <div className="flex gap-6 text-white/40">
-              <span className="material-symbols-outlined hover:text-white transition-colors cursor-pointer">share</span>
-              <span className="material-symbols-outlined hover:text-white transition-colors cursor-pointer">mail</span>
-              <span className="material-symbols-outlined hover:text-white transition-colors cursor-pointer">public</span>
+            <div className="flex gap-6 text-text-muted">
+              <span className="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">share</span>
+              <span className="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">mail</span>
+              <span className="material-symbols-outlined hover:text-primary transition-colors cursor-pointer">public</span>
             </div>
           </div>
         </div>
         
         <div className="p-8 text-center">
-          <p className="text-[10px] text-white/20 uppercase tracking-widest">Conecta-Camp 2026 · Monte Magdalena</p>
+          <p className="text-[10px] text-text-muted uppercase tracking-widest">Conecta-Camp 2026 · Monte Magdalena</p>
         </div>
       </div>
     </>

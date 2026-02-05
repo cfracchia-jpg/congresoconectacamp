@@ -36,7 +36,7 @@ const exponents: Exponent[] = [
     role: "Psicóloga clínica, Clínica de Ansiedad",
     specialty: "Especialista en Ansiedad, Infanto Juvenil",
     image: "https://www.clinicadeansiedad.cl/wp-content/uploads/2025/06/Catalina-Fracchia-2-1024x1024.jpg",
-    bio: "Psicóloga Clínica con especialización en población infanto-juvenil y trastornos de ansiedad. Aporta una mirada fresca y rigurosa sobre los desafíos de la adolescencia moderna y las estrategias clínicas para abordarlos desde el vínculo terapéutico."
+    bio: "Psicóloga clínica infanto juvenil, especialista en trastornos de ansiedad y trastorno obsesivo compulsivo en niños y adolescentes. Aporta una mirada fresca y rigurosa sobre los desafíos de la adolescencia moderna y las estrategias clínicas para abordarlos desde el vínculo terapéutico."
   },
   {
     name: "Ps. Elisa Señoret",
@@ -84,10 +84,10 @@ const Exponents: React.FC = () => {
     <section id="charlistas" className="px-6 py-20 md:max-w-6xl md:mx-auto scroll-mt-24">
       <div className="flex flex-col items-center mb-16 text-center">
         <h2 className="text-[10px] font-bold uppercase tracking-[0.4em] text-primary mb-4 animate-fade-in-up">Nuestros Exponentes</h2>
-        <h3 className="text-3xl md:text-5xl font-black uppercase opacity-0 animate-fade-in-up animation-delay-200">
+        <h3 className="text-3xl md:text-5xl font-black uppercase opacity-0 animate-fade-in-up animation-delay-200 text-white">
           Mentes que <span className="text-primary italic">conectan</span>
         </h3>
-        <p className="text-white/40 mt-4 max-w-lg text-sm md:text-base opacity-0 animate-fade-in-up animation-delay-400">
+        <p className="text-text-muted mt-4 max-w-lg text-sm md:text-base opacity-0 animate-fade-in-up animation-delay-400">
           Un panel de profesionales líderes seleccionados para transformar tu visión de los vínculos humanos.
         </p>
       </div>
@@ -97,64 +97,80 @@ const Exponents: React.FC = () => {
           <div 
             key={idx} 
             onClick={() => setSelectedExponent(speaker)}
-            className="group relative p-8 rounded-2xl bg-charcoal border border-white/5 hover:border-primary/30 transition-all duration-500 flex flex-col items-start justify-start min-h-[220px] hover:shadow-[0_10px_40px_-15px_rgba(19,236,109,0.1)] cursor-pointer"
+            className="group relative p-8 rounded-2xl bg-surface border border-white/10 shadow-soft hover:shadow-lg hover:border-primary/20 hover:-translate-y-2 transition-all duration-500 flex flex-col items-start justify-start min-h-[220px] cursor-pointer"
           >
             <div className="mb-6 relative">
-              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors duration-500 bg-white/5">
+              <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-white/10 group-hover:border-primary transition-colors duration-500 bg-background-page relative">
                 <img 
-                  src={speaker.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(speaker.name)}&background=1a1a1a&color=13ec6d&size=128&bold=true`} 
+                  src={speaker.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(speaker.name)}&background=6ee7b7&color=475569&size=128&bold=true`} 
                   alt={speaker.name}
-                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 opacity-80 group-hover:opacity-100"
+                  className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 opacity-90 group-hover:opacity-100"
                 />
+                
+                {/* Play Icon if video exists */}
+                {speaker.videoUrl && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30 group-hover:bg-transparent transition-all">
+                        <div className="size-8 rounded-full bg-primary/90 text-background-page flex items-center justify-center scale-75 group-hover:scale-100 transition-transform duration-300">
+                            <span className="material-symbols-outlined !text-lg">play_arrow</span>
+                        </div>
+                    </div>
+                )}
               </div>
-              <div className="absolute -bottom-1 -right-1 bg-primary text-black text-[10px] font-bold px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                 VER CV
+              <div className="absolute -bottom-1 -right-1 bg-primary text-surface text-[10px] font-bold px-2 py-0.5 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 shadow-sm">
+                 {speaker.videoUrl ? 'VER VIDEO' : 'VER INFO'}
               </div>
             </div>
 
-            {/* Role removed as requested */}
-            
-            <h4 className="text-xl md:text-2xl font-bold mb-3 group-hover:text-primary transition-colors duration-300 decoration-primary/30 group-hover:underline underline-offset-4 decoration-1">
+            <h4 className="text-xl md:text-2xl font-bold mb-3 text-white group-hover:text-primary transition-colors duration-300 decoration-primary/30 group-hover:underline underline-offset-4 decoration-1">
               {speaker.name}
             </h4>
-            <p className="text-white/50 text-xs font-medium leading-relaxed max-w-[200px]">
+            <p className="text-text-muted text-xs font-medium leading-relaxed max-w-[200px]">
               {speaker.specialty}
             </p>
-            
-            {/* Subtle interactive element */}
-            <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <span className="material-symbols-outlined text-primary/30 !text-xl">add_circle</span>
-            </div>
           </div>
         ))}
       </div>
 
-      {/* Modal Overlay */}
+      {/* Modal Overlay with Glow Effect */}
       {selectedExponent && (
-        <div className="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in-up duration-300" onClick={() => setSelectedExponent(null)}>
+        <div 
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 animate-overlay-appear bg-background-page/60 backdrop-blur-xl"
+          style={{ backgroundImage: 'radial-gradient(circle at center, rgba(220, 189, 161, 0.15), rgba(43, 38, 36, 0.8))' }}
+          onClick={() => setSelectedExponent(null)}
+        >
           <div 
-            className="bg-charcoal border border-white/10 rounded-3xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col md:flex-row"
+            className="bg-surface border border-white/10 rounded-3xl max-w-4xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative flex flex-col md:flex-row animate-modal-slide-up"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={() => setSelectedExponent(null)}
-              className="absolute top-4 right-4 z-10 size-10 rounded-full bg-black/50 hover:bg-white/10 text-white flex items-center justify-center transition-colors border border-white/5"
+              className="absolute top-4 right-4 z-10 size-10 rounded-full bg-background-page/80 hover:bg-white/10 text-white flex items-center justify-center transition-colors border border-white/10 shadow-sm"
             >
               <span className="material-symbols-outlined">close</span>
             </button>
 
-            {/* Image Side */}
-            <div className="md:w-2/5 h-64 md:h-auto relative bg-background-dark">
-              <img 
-                src={selectedExponent.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedExponent.name)}&background=1a1a1a&color=13ec6d&size=128&bold=true`}
-                alt={selectedExponent.name}
-                className="w-full h-full object-cover grayscale opacity-80"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-transparent md:bg-gradient-to-r"></div>
+            {/* Media Side (Video or Image) */}
+            <div className="md:w-1/2 h-64 md:h-auto relative bg-black flex items-center justify-center overflow-hidden">
+               {selectedExponent.videoUrl ? (
+                   <video 
+                     controls 
+                     autoPlay 
+                     className="w-full h-full object-cover"
+                     src={selectedExponent.videoUrl}
+                   >
+                     Tu navegador no soporta el elemento de video.
+                   </video>
+               ) : (
+                  <img 
+                    src={selectedExponent.image || `https://ui-avatars.com/api/?name=${encodeURIComponent(selectedExponent.name)}&background=6ee7b7&color=475569&size=128&bold=true`}
+                    alt={selectedExponent.name}
+                    className="w-full h-full object-cover grayscale opacity-90"
+                  />
+               )}
             </div>
 
             {/* Content Side */}
-            <div className="p-8 md:p-12 md:w-3/5 flex flex-col justify-center">
+            <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center bg-surface">
               <p className="text-primary text-xs font-bold tracking-[0.2em] uppercase mb-2">
                 {selectedExponent.role}
               </p>
@@ -163,13 +179,13 @@ const Exponents: React.FC = () => {
               </h3>
               <div className="w-12 h-1 bg-primary mb-6"></div>
               
-              <div className="space-y-4 text-white/70 leading-relaxed font-light text-sm md:text-base">
+              <div className="space-y-4 text-text-muted leading-relaxed font-light text-sm md:text-base">
                 <p>{selectedExponent.bio || "Información biográfica no disponible por el momento."}</p>
               </div>
 
-              <div className="mt-8 pt-6 border-t border-white/5 flex gap-4">
+              <div className="mt-8 pt-6 border-t border-white/10 flex gap-4">
                  <div className="flex flex-col">
-                    <span className="text-[10px] text-white/30 uppercase tracking-widest mb-1">Especialidad</span>
+                    <span className="text-[10px] text-text-muted uppercase tracking-widest mb-1 font-bold">Especialidad</span>
                     <span className="text-sm font-medium text-white">{selectedExponent.specialty}</span>
                  </div>
               </div>
@@ -184,22 +200,38 @@ const Exponents: React.FC = () => {
           href="https://www.instagram.com/clinicadeansiedad/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:scale-[1.02] active:scale-[0.98] transition-all group w-full md:w-auto"
+          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-surface border border-white/10 shadow-soft hover:bg-background-page hover:scale-[1.02] active:scale-[0.98] transition-all group w-full md:w-auto"
         >
-          <span className="text-white/60 font-medium group-hover:text-primary transition-colors">@clinicadeansiedad</span>
-          <span className="material-symbols-outlined text-white/40 group-hover:text-primary transition-colors !text-sm">arrow_outward</span>
+          <span className="text-white font-medium group-hover:text-primary transition-colors">@clinicadeansiedad</span>
         </a>
 
         <a 
           href="https://www.instagram.com/la_familia_que_quiero/"
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:scale-[1.02] active:scale-[0.98] transition-all group w-full md:w-auto"
+          className="flex items-center justify-center gap-3 px-8 py-4 rounded-xl bg-surface border border-white/10 shadow-soft hover:bg-background-page hover:scale-[1.02] active:scale-[0.98] transition-all group w-full md:w-auto"
         >
-          <span className="text-white/60 font-medium group-hover:text-primary transition-colors">@la_familia_que_quiero</span>
-          <span className="material-symbols-outlined text-white/40 group-hover:text-primary transition-colors !text-sm">arrow_outward</span>
+          <span className="text-white font-medium group-hover:text-primary transition-colors">@la_familia_que_quiero</span>
         </a>
       </div>
+
+      <style>{`
+        @keyframes overlayAppear {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .animate-overlay-appear {
+            animation: overlayAppear 0.5s ease-out forwards;
+        }
+
+        @keyframes modalSlideUp {
+            0% { opacity: 0; transform: translateY(100px) scale(0.95); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .animate-modal-slide-up {
+            animation: modalSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+      `}</style>
     </section>
   );
 };

@@ -17,4 +17,5 @@ export interface Exponent {
   specialty: string;
   image: string;
   bio?: string;
+  videoUrl?: string; // URL del video de invitación
 }
