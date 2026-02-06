@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import ExperienceCard from './components/ExperienceCard';
 import Exponents from './components/Exponents';
-import GeminiConcierge from './components/GeminiConcierge';
 import CustomCursor from './components/CustomCursor';
 import { EventDetail } from './types';
 
@@ -196,9 +195,9 @@ const App: React.FC = () => {
           time: "10:00 – 12:00", 
           title: "Adolescencia en modo vínculo: cómo ayudar a los adolescentes a relacionarse mejor.", 
           speaker: "Ps. Elisa Señoret + Ps. Catalina Fracchia + Ps. Loreto Gálvez",
-          desc: "Prácticas para ayudar a adolescentes a aprender a conversar.",
+          desc: "Prácticas para ayudar a adolescentes a aprender a conversar. Una conversación profunda, que une tres miradas distintas sobre cómo ayudar a los adolescentes a tener mejores relaciones.",
           takeaways: [
-              "Entender los principios básicos para mantener conversaciones profundas y empáticas."
+              "Estrategias y herramientas concretas para conversar y relacionarse mejor."
           ]
         },
       ]
@@ -502,7 +501,7 @@ const App: React.FC = () => {
 
       </main>
 
-      <GeminiConcierge />
+      {/* Gemini Concierge Removed as requested */}
 
       <div id="registro" className="fixed bottom-0 left-0 right-0 p-6 bg-white/90 backdrop-blur-lg border-t border-gray-200 z-[50]">
         <div className="max-w-md mx-auto flex flex-col gap-3">
