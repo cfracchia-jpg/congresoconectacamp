@@ -194,13 +194,11 @@ const App: React.FC = () => {
         { 
           id: "d2-b1",
           time: "10:00 – 12:00", 
-          title: "Mesa Redonda: El Enigma Adolescente", 
+          title: "Adolescencia en modo vínculo: cómo ayudar a los adolescentes a relacionarse mejor.", 
           speaker: "Ps. Elisa Señoret + Ps. Catalina Fracchia + Ps. Loreto Gálvez",
-          desc: "Tres expertas, tres miradas. Un diálogo crítico sobre cómo vincularnos con una generación marcada por la inmediatez y la fragilidad. Abordaremos trauma, identidad y el desafío de ser adulto referente hoy.",
+          desc: "Prácticas para ayudar a adolescentes a aprender a conversar.",
           takeaways: [
-              "Estrategias de enganche con adolescentes resistentes.",
-              "Mirada informada por el trauma (EMDR).",
-              "Herramientas de coaching parental efectivo."
+              "Entender los principios básicos para mantener conversaciones profundas y empáticas."
           ]
         },
       ]
