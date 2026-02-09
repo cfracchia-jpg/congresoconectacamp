@@ -34,13 +34,13 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <div className="fixed top-0 left-0 right-0 z-[70] bg-background-page py-2 border-b border-primary/10">
+      <div className="absolute top-0 left-0 right-0 z-[70] bg-background-page py-2 border-b border-primary/10">
         <p className="text-center text-[10px] font-bold tracking-[0.4em] uppercase text-primary">
           Te invitan a
         </p>
       </div>
 
-      <nav className="fixed top-[33px] left-0 right-0 z-[60] flex items-center bg-surface/90 backdrop-blur-md p-4 justify-between border-b border-gray-200 shadow-sm">
+      <nav className="absolute top-[33px] left-0 right-0 z-[60] flex items-center bg-surface/90 backdrop-blur-md p-4 justify-between border-b border-gray-200 shadow-sm">
         <button 
           onClick={() => setIsMenuOpen(true)}
           className="text-primary flex size-10 shrink-0 items-center justify-center cursor-pointer hover:bg-primary/10 rounded-full transition-colors group"

@@ -140,9 +140,9 @@ const App: React.FC = () => {
         { 
           id: "d1-b4",
           time: "14:55 – 16:15", 
-          title: "Trabajo con Wiston: Tecnología, Alianza y Vínculo", 
+          title: "Trabajo con Winston: Tecnología, Alianza y Vínculo", 
           speaker: "José Uribe & Lucas Uribe",
-          desc: "Trabajo con Wiston por medio de tecnología alianza, abordando los factores que más inciden en que se genere el vínculo entre un cliente y su terapeuta. ¿Es la IA un aliado o una amenaza?",
+          desc: "Trabajo con Winston por medio de tecnología alianza, abordando los factores que más inciden en que se genere el vínculo entre un cliente y su terapeuta. ¿Es la IA un aliado o una amenaza?",
           takeaways: [
               "Uso ético de herramientas digitales en psicoterapia.",
               "Estrategias para medir y mejorar la alianza terapéutica.",
